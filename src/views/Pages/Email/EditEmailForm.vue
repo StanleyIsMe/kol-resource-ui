@@ -205,10 +205,29 @@
                     removeTag,
                   }"
                 >
-                  <!-- Todo select all button-->
-                  <!-- <b-input-group-append>
-                    <b-button @click="addTag()" variant="primary">All</b-button>
-                  </b-input-group-append> -->
+                  <!-- Add Select All button -->
+                  <div class="d-flex justify-content-end mb-2">
+                    <b-button
+                      variant="primary"
+                      size="sm"
+                      @click="selectAllFilteredKols"
+                      class="select-all-btn mr-2"
+                      :disabled="kolOptions.length === 0"
+                    >
+                      <i class="ni ni-check-bold mr-1"></i> Select All
+                    </b-button>
+
+                    <b-button
+                      variant="danger"
+                      size="sm"
+                      @click="removeAllKols"
+                      class="remove-all-btn"
+                      :disabled="form.kols.length === 0"
+                    >
+                      <i class="ni ni-fat-remove mr-1"></i> Remove All
+                    </b-button>
+                  </div>
+
                   <ul
                     v-if="tags.length > 0"
                     class="list-inline d-inline-block mb-2"
@@ -337,17 +356,22 @@ export default {
     onSubmit(event) {
       if (this.form.kols.length == 0) {
         alert("請選擇至少一個KOL");
-
         return;
       }
 
       if (this.editorDom.getData().trim() == "") {
         alert("信件內容不得為空");
-
         return;
       }
 
-      this.form.emailBody = this.editorDom.getData();
+      // Get the editor content
+      const originalContent = this.editorDom.getData();
+
+      // Process the content to extract images and convert to CID format
+      const { processedContent, images } =
+        this.processImagesForEmail(originalContent);
+
+      this.form.emailBody = processedContent;
       event.preventDefault();
 
       const url = process.env.VUE_APP_KOL_API_URL + "/api/v1/send_emails";
@@ -361,9 +385,10 @@ export default {
 
       const requestBody = {
         subject: this.form.subject,
-        email_content: this.editorDom.getData(),
+        email_content: processedContent,
         product_id: this.form.product,
         kol_ids: this.form.kols,
+        images: images, // Add the extracted images array
       };
 
       this.axios
@@ -375,7 +400,7 @@ export default {
         })
         .catch((error) => {
           if (error.status == 401) {
-            this.$router.push({name: 'login'}) 
+            this.$router.push({ name: "login" });
 
             return;
           }
@@ -424,7 +449,7 @@ export default {
         })
         .catch((error) => {
           if (error.status == 401) {
-            this.$router.push({name: 'login'}) 
+            this.$router.push({ name: "login" });
 
             return;
           }
@@ -462,7 +487,7 @@ export default {
         })
         .catch((error) => {
           if (error.status == 401) {
-            this.$router.push({name: 'login'}) 
+            this.$router.push({ name: "login" });
 
             return;
           }
@@ -521,7 +546,7 @@ export default {
         })
         .catch((error) => {
           if (error.status == 401) {
-            this.$router.push({name: 'login'}) 
+            this.$router.push({ name: "login" });
 
             return;
           }
@@ -529,6 +554,109 @@ export default {
           console.error("Error:", error);
         });
     },
+    // New method to process images from CKEditor content
+    processImagesForEmail(htmlContent) {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(htmlContent, "text/html");
+      const images = [];
+      let imageCounter = 1;
+
+      // Find all img elements
+      const imgElements = doc.querySelectorAll("img");
+
+      imgElements.forEach((img) => {
+        const src = img.getAttribute("src");
+
+        // Process only data URLs (base64 encoded images)
+        if (src && src.startsWith("data:image/")) {
+          const imageType = src.split(";")[0].split("/")[1];
+          const base64Data = src.split(",")[1];
+          const contentId = `image${imageCounter}`;
+
+          // Replace src with cid reference
+          img.setAttribute("src", `cid:${contentId}`);
+
+          // Store image data for backend processing
+          images.push({
+            content_id: contentId,
+            type: imageType,
+            data: base64Data,
+          });
+
+          imageCounter++;
+        }
+      });
+
+      // Serialize the modified DOM back to HTML
+      const processedContent = doc.body.innerHTML;
+
+      return { processedContent, images };
+    },
+    selectAllFilteredKols() {
+      // If there are no options or all options are already selected, do nothing
+      if (this.kolOptions.length === 0 || this.availableOptions.length === 0) {
+        return;
+      }
+
+      // Get all currently available KOL ids
+      const kolIdsToAdd = this.availableOptions.map((option) => option.value);
+
+      // Add them to the currently selected kols (without duplicates)
+      this.form.kols = [...new Set([...this.form.kols, ...kolIdsToAdd])];
+
+      // Show confirmation message
+      this.$bvToast.toast(`Added ${kolIdsToAdd.length} KOLs to recipients`, {
+        title: "KOLs Selected",
+        variant: "success",
+        solid: true,
+        autoHideDelay: 3000,
+      });
+    },
+    removeAllKols() {
+      // If there are no selected KOLs, do nothing
+      if (this.form.kols.length === 0) {
+        return;
+      }
+
+      // Store the count for the confirmation message
+      const removedCount = this.form.kols.length;
+
+      // Clear all selected KOLs
+      this.form.kols = [];
+
+      // Show confirmation message
+      this.$bvToast.toast(`Removed ${removedCount} KOLs from recipients`, {
+        title: "KOLs Removed",
+        variant: "warning",
+        solid: true,
+        autoHideDelay: 3000,
+      });
+    },
   },
 };
 </script>
+
+<style>
+.select-all-btn,
+.remove-all-btn {
+  transition: all 0.2s ease;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.select-all-btn:hover,
+.remove-all-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+}
+
+.remove-all-btn {
+  background-color: #f5365c;
+  border-color: #f5365c;
+}
+
+.remove-all-btn:hover {
+  background-color: #f21e48;
+  border-color: #f21e48;
+}
+</style>
