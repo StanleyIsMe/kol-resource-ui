@@ -100,11 +100,6 @@
         alertMessage: "login success"
       };
     },
-    mounted() {
-      if (localStorage.getItem("token")) {
-        this.$router.push({name: 'dashboard'}) 
-      }
-    },
     methods: {
       onSubmit() {
         const url = process.env.VUE_APP_KOL_API_URL + '/api/v1/login';
