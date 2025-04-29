@@ -89,13 +89,6 @@
     </b-card-header>
 
     <!-- KOL Results Section -->
-    <div
-      class="table-header d-flex justify-content-between align-items-center px-4 py-3"
-    >
-      <h4 class="mb-0 text-white">KOL Directory</h4>
-      <span class="badge badge-primary">{{ kols.length }} KOLs</span>
-    </div>
-
     <el-table
       class="table-responsive table table-dark"
       header-row-class-name="thead-dark"
@@ -175,9 +168,22 @@
       <!-- Edit KOL -->
       <el-table-column label="Actions" min-width="120px" align="center">
         <template v-slot="{ row }">
-          <a :href="`#/kols-edit?id=${row.id}`" class="btn btn-sm btn-info">
-            <i class="ni ni-settings mr-1"></i> Edit
-          </a>
+          <div class="btn-group">
+            <a
+              :href="`#/kols-edit?id=${row.id}`"
+              class="btn btn-sm btn-info mr-2"
+            >
+              <i class="ni ni-settings mr-1"></i> Edit
+            </a>
+            <b-button
+              variant="danger"
+              size="sm"
+              @click="confirmDelete(row)"
+              class="btn-sm"
+            >
+              <i class="ni ni-fat-remove mr-1"></i> Delete
+            </b-button>
+          </div>
         </template>
       </el-table-column>
     </el-table>
@@ -311,8 +317,8 @@ export default {
       const url = process.env.VUE_APP_KOL_API_URL + "/api/v1/kols/upload";
 
       const formData = new FormData();
-      formData.append('file', file);
-      
+      formData.append("file", file);
+
       // if (this.value.length > 0) {
       //   this.value.forEach((tagName) => {
       //     requestBody.tags.push(this.tagMap.get(tagName));
@@ -321,31 +327,33 @@ export default {
 
       const config = {
         headers: {
-          'Content-Type': 'multipart/form-data',
-          "Authorization": "Bearer " + localStorage.getItem("token"),
-        }
-      }
+          "Content-Type": "multipart/form-data",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      };
 
-      this.axios.post(url, formData, config).then((response) => {
-        if (response.status == 200) {
-          this.$notify({
-            title: 'Success',
-            message: 'KOLs imported successfully',
-            type: 'success'
-          });
-          this.listKols(); // Reload the current page data
-        }
-      })
-      .catch((error) => {
-        if (error.status == 401) {
-          this.$router.push({name: 'login'}) 
+      this.axios
+        .post(url, formData, config)
+        .then((response) => {
+          if (response.status == 200) {
+            this.$notify({
+              title: "Success",
+              message: "KOLs imported successfully",
+              type: "success",
+            });
+            this.listKols(); // Reload the current page data
+          }
+        })
+        .catch((error) => {
+          if (error.status == 401) {
+            this.$router.push({ name: "login" });
 
-          return;
-        }
+            return;
+          }
 
-        console.error("Error:", error);
-        alert("Error:" + error.response.data);
-      });
+          console.error("Error:", error);
+          alert("Error:" + error.response.data);
+        });
     },
     getTagVariant(tag) {
       const tagName =
@@ -442,6 +450,54 @@ export default {
 
       // Reset file input for future uploads
       this.$refs.fileInput.value = null;
+    },
+    confirmDelete(kol) {
+      if (confirm(`Are you sure you want to delete "${kol.name}"?`)) {
+        this.deleteKol(kol.id);
+      }
+    },
+    deleteKol(id) {
+      const url = `${process.env.VUE_APP_KOL_API_URL}/api/v1/kols/${id}`;
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      };
+
+      this.axios
+        .delete(url, config)
+        .then((response) => {
+          if (response.status === 200) {
+            // Show success notification
+            this.$bvToast.toast(`KOL deleted successfully`, {
+              title: "Success",
+              variant: "success",
+              solid: true,
+              autoHideDelay: 3000,
+            });
+
+            // Refresh the list
+            this.listKols();
+          }
+        })
+        .catch((error) => {
+          console.error("Error deleting KOL:", error);
+
+          if (error.response && error.response.status === 401) {
+            this.$router.push({ name: "login" });
+            return;
+          }
+
+          // Show error notification
+          this.$bvToast.toast(`Failed to delete KOL`, {
+            title: "Error",
+            variant: "danger",
+            solid: true,
+            autoHideDelay: 3000,
+          });
+        });
     },
   },
   watch: {

@@ -234,7 +234,7 @@
                   >
                     <li v-for="tag in tags" :key="tag" class="list-inline-item">
                       <b-form-tag
-                        @remove="removeTag(tag)"
+                        @remove="handleRemoveKol(tag, removeTag)"
                         :title="tag"
                         :disabled="disabled"
                         variant="info"
@@ -354,8 +354,19 @@ export default {
       return this.tagMap.get(tag);
     },
     onSubmit(event) {
-      if (this.form.kols.length == 0) {
+      // Perform validation first
+      if (!this.form.subject) {
+        alert("主旨不得為空");
+        return;
+      }
+
+      if (this.form.kols.length === 0) {
         alert("請選擇至少一個KOL");
+        return;
+      }
+
+      if (this.form.product === null) {
+        alert("請選擇產品");
         return;
       }
 
@@ -364,15 +375,28 @@ export default {
         return;
       }
 
-      // Get the editor content
-      const originalContent = this.editorDom.getData();
+      // Show confirmation dialog with recipient count and email details
+      const recipientCount = this.form.kols.length;
+      const confirmMessage = `確定要發送此郵件嗎？\n\n主旨: ${
+        this.form.subject
+      }\n收件者數量: ${recipientCount} 位KOL\n產品: ${this.getProductName(
+        this.form.product
+      )}`;
+
+      if (!confirm(confirmMessage)) {
+        // User cancelled sending
+        return;
+      }
+
+      // If confirmed, proceed with sending email
+      event.preventDefault();
 
       // Process the content to extract images and convert to CID format
+      const originalContent = this.editorDom.getData();
       const { processedContent, images } =
         this.processImagesForEmail(originalContent);
 
       this.form.emailBody = processedContent;
-      event.preventDefault();
 
       const url = process.env.VUE_APP_KOL_API_URL + "/api/v1/send_emails";
 
@@ -388,25 +412,42 @@ export default {
         email_content: processedContent,
         product_id: this.form.product,
         kol_ids: this.form.kols,
-        images: images, // Add the extracted images array
+        images: images,
       };
+
+      // Show sending status
+      this.$bvToast.toast("Sending emails, please wait...", {
+        title: "Sending",
+        variant: "info",
+        solid: true,
+        autoHideDelay: 5000,
+      });
 
       this.axios
         .post(url, requestBody, config)
         .then((response) => {
           if (response.status == 200) {
-            alert("send mail success");
+            this.$bvToast.toast(`成功發送郵件給 ${recipientCount} 位KOL`, {
+              title: "發送成功",
+              variant: "success",
+              solid: true,
+              autoHideDelay: 5000,
+            });
           }
         })
         .catch((error) => {
           if (error.status == 401) {
             this.$router.push({ name: "login" });
-
             return;
           }
 
           console.error("Error:", error);
-          alert("send mail failed");
+          this.$bvToast.toast("發送郵件失敗，請稍後再試", {
+            title: "發送失敗",
+            variant: "danger",
+            solid: true,
+            autoHideDelay: 5000,
+          });
         });
     },
     onReset(event) {
@@ -632,11 +673,49 @@ export default {
         autoHideDelay: 3000,
       });
     },
+    getProductName(productId) {
+      const product = this.productOptions.find(
+        (option) => option.value === productId
+      );
+      return product ? product.text : "Unknown Product";
+    },
+    handleRemoveKol(tag, removeTagFunction) {
+      // Store the current scroll position
+      const scrollPosition =
+        window.pageYOffset || document.documentElement.scrollTop;
+
+      // Call the original removeTag function from the component
+      removeTagFunction(tag);
+
+      // Use setTimeout to ensure the DOM has updated before setting scroll position
+      setTimeout(() => {
+        window.scrollTo({
+          top: scrollPosition,
+          behavior: "auto", // Use 'auto' instead of 'smooth' to prevent visible scrolling
+        });
+      }, 0);
+    },
   },
 };
 </script>
 
 <style>
+/* Add this new CSS */
+.form-group {
+  min-height: 50px; /* Provides stability during DOM changes */
+}
+
+/* Make the tags container more stable */
+.list-inline {
+  min-height: 38px;
+}
+
+/* Force container to maintain size during transitions */
+.b-form-tags-form {
+  transition: none !important;
+}
+
+/* Your existing styles remain below */
 .select-all-btn,
 .remove-all-btn {
   transition: all 0.2s ease;
