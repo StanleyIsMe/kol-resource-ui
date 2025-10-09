@@ -148,3 +148,175 @@
     }
   };
 </script>
+
+<style lang="scss">
+/* KOL Marketing Company - Vibrant Sidebar Styles */
+
+#sidenav-main {
+  background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+  border-right: none;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  
+  .navbar-brand {
+    background: rgba(255,255,255,0.1);
+    border-radius: 15px;
+    margin: 15px;
+    padding: 15px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background: rgba(255,255,255,0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    
+    .navbar-brand-img {
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+  }
+  
+  .navbar-nav {
+    padding: 20px 15px;
+    
+    .nav-item {
+      margin-bottom: 8px;
+      
+      .nav-link {
+        background: rgba(255,255,255,0.1);
+        border-radius: 12px;
+        margin: 4px 0;
+        padding: 15px 20px;
+        color: rgba(255,255,255,0.9);
+        font-weight: 500;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.1);
+        position: relative;
+        overflow: hidden;
+        
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+          transition: left 0.5s ease;
+        }
+        
+        &:hover {
+          background: rgba(255,255,255,0.2);
+          color: white;
+          transform: translateX(5px);
+          box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+          border-color: rgba(255,255,255,0.3);
+          
+          &::before {
+            left: 100%;
+          }
+        }
+        
+        &.active {
+          background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+          color: white;
+          box-shadow: 0 5px 20px rgba(255,107,107,0.4);
+          border-color: rgba(255,255,255,0.3);
+          
+          &::before {
+            display: none;
+          }
+          
+          i {
+            color: white;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+          }
+        }
+        
+        i {
+          font-size: 1.2rem;
+          margin-right: 12px;
+          transition: all 0.3s ease;
+          text-shadow: 0 0 5px rgba(0,0,0,0.3);
+        }
+        
+        .nav-link-text {
+          font-size: 0.95rem;
+          letter-spacing: 0.5px;
+        }
+      }
+    }
+  }
+  
+  /* Special styling for different menu items */
+  .nav-item:nth-child(1) .nav-link i { color: #74b9ff; } /* Dashboard */
+  .nav-item:nth-child(2) .nav-link i { color: #fd79a8; } /* Tags */
+  .nav-item:nth-child(3) .nav-link i { color: #fdcb6e; } /* Email */
+  .nav-item:nth-child(4) .nav-link i { color: #6c5ce7; } /* KOL */
+  .nav-item:nth-child(5) .nav-link i { color: #a29bfe; } /* Products */
+  .nav-item:nth-child(6) .nav-link i { color: #fd79a8; } /* Login */
+  .nav-item:nth-child(7) .nav-link i { color: #fdcb6e; } /* Register */
+  
+  /* Mobile responsive */
+  @media (max-width: 768px) {
+    .navbar-brand {
+      margin: 10px;
+      padding: 10px;
+    }
+    
+    .navbar-nav {
+      padding: 15px 10px;
+      
+      .nav-item .nav-link {
+        padding: 12px 15px;
+        margin: 2px 0;
+      }
+    }
+  }
+}
+
+/* Sidebar toggle button enhancement */
+.navbar-toggler {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
+  padding: 8px 12px;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: rgba(255,255,255,0.2);
+    transform: scale(1.05);
+  }
+  
+  .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  }
+}
+
+/* Sidebar collapse animation */
+.navbar-collapse {
+  transition: all 0.3s ease;
+}
+
+/* Custom scrollbar for sidebar */
+#sidenav-main::-webkit-scrollbar {
+  width: 6px;
+}
+
+#sidenav-main::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.1);
+  border-radius: 3px;
+}
+
+#sidenav-main::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.3);
+  border-radius: 3px;
+  
+  &:hover {
+    background: rgba(255,255,255,0.5);
+  }
+}
+</style>
