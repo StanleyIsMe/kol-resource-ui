@@ -1,7 +1,7 @@
 <template>
   <b-card no-body class="bg-default shadow">
     <b-card-header class="bg-transparent border-0">
-      <h3 class="mb-4 text-white">KOL Management</h3>
+      <!-- <h3 class="mb-4 text-white">KOL Management</h3> -->
 
       <!-- Search Section -->
       <b-card class="search-card mb-4">
@@ -79,7 +79,7 @@
 
                 <!-- Existing create button -->
                 <a href="#/kols-edit" class="btn btn-success kol-create-btn">
-                  <i class="ni ni-fat-add mr-2"></i> Create KOL
+                  <i class="ni ni-fat-add mr-2"></i> Create
                 </a>
               </b-col>
             </b-row>

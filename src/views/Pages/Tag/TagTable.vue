@@ -1,7 +1,7 @@
 <template>
   <b-card no-body class="bg-default shadow">
     <b-card-header class="bg-transparent border-0">
-      <h3 class="mb-4 text-white">Tag Management</h3>
+      <!-- <h3 class="mb-4 text-white">Tag Management</h3> -->
 
       <!-- Search Section -->
       <b-card class="search-card mb-4">
@@ -54,7 +54,7 @@
                   variant="success"
                   class="tag-btn flex-grow-1"
                 >
-                  <i class="ni ni-fat-add mr-2"></i> Create Tag
+                  <i class="ni ni-fat-add mr-2"></i> Create
                 </b-button>
               </b-col>
             </b-row>

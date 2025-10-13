@@ -368,6 +368,34 @@
               <i class="ni ni-send mr-2"></i>步驟 4: 確認發送
             </h5>
             
+            <!-- Email Information Preview -->
+            <div class="preview-content">
+              <div class="preview-section mb-3">
+                <h6 class="text-primary mb-2">
+                  <i class="ni ni-email-83 mr-1"></i>郵件資訊
+                </h6>
+                <p><strong>主旨:</strong> {{ form.subject }}</p>
+                <p><strong>寄信者:</strong> {{ getSenderName(form.sender) }} ({{ getSenderEmail(form.sender) }})</p>
+                <p><strong>產品:</strong> {{ getProductName(form.product) }}</p>
+              </div>
+              
+              <div class="preview-section mb-4">
+                <h6 class="text-primary mb-2">
+                  <i class="ni ni-single-02 mr-1"></i>收件者清單 ({{ form.kols.length }}位)
+                </h6>
+                <div class="recipients-list">
+                  <div 
+                    v-for="kolId in form.kols" 
+                    :key="kolId" 
+                    class="recipient-item d-flex align-items-center mb-2"
+                  >
+                    <i class="ni ni-check-bold text-success mr-2"></i>
+                    <span>{{ getCustomKolDisplay(kolId) }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
             <div class="d-flex justify-content-between">
               <b-button variant="secondary" @click="prevStep">
                 <i class="ni ni-bold-left"></i> 上一步
@@ -385,45 +413,6 @@
         </b-form>
       </validation-observer>
 
-      <!-- Preview Modal -->
-      <b-modal
-        id="preview-modal"
-        title="📧 郵件發送確認"
-        size="lg"
-        @ok="confirmSend"
-        @cancel="cancelSend"
-        ok-title="確認發送"
-        cancel-title="取消"
-        ok-variant="primary"
-        cancel-variant="secondary"
-      >
-        <div class="preview-content">
-          <div class="preview-section mb-3">
-            <h6 class="text-primary mb-2">
-              <i class="ni ni-email-83 mr-1"></i>郵件資訊
-            </h6>
-            <p><strong>主旨:</strong> {{ form.subject }}</p>
-            <p><strong>寄信者:</strong> {{ getSenderName(form.sender) }} ({{ getSenderEmail(form.sender) }})</p>
-            <p><strong>產品:</strong> {{ getProductName(form.product) }}</p>
-          </div>
-          
-          <div class="preview-section">
-            <h6 class="text-primary mb-2">
-              <i class="ni ni-single-02 mr-1"></i>收件者清單 ({{ form.kols.length }}位)
-            </h6>
-            <div class="recipients-list">
-              <div 
-                v-for="kolId in form.kols" 
-                :key="kolId" 
-                class="recipient-item d-flex align-items-center mb-2"
-              >
-                <i class="ni ni-check-bold text-success mr-2"></i>
-                <span>{{ getCustomKolDisplay(kolId) }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </b-modal>
       
       <!-- Error Modal -->
       <b-modal
@@ -722,8 +711,8 @@ export default {
         return;
       }
 
-      // Show preview modal instead of direct confirmation
-      this.$bvModal.show('preview-modal');
+      // Call API directly
+      this.confirmSend();
     },
     
     confirmSend() {
@@ -822,9 +811,6 @@ export default {
       this.$bvModal.show('error-modal');
     },
     
-    cancelSend() {
-      // Modal will close automatically
-    },
     onReset(event) {
       if (event) event.preventDefault();
       
@@ -1066,7 +1052,8 @@ export default {
           variant: "success",
           solid: true,
           autoHideDelay: 3000,
-          toaster: 'b-toaster-top-right'
+          toaster: 'b-toaster-top-right',
+          noCloseButton: false
         });
         
         console.log("Total KOLs found:", allKols.length);
@@ -1916,6 +1903,33 @@ body {
 
 .modal-body {
   padding: 0;
+}
+
+/* Toast Styles */
+.toast {
+  min-width: 300px;
+  max-width: 400px;
+}
+
+.toast-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  background-color: rgba(255, 255, 255, 0.85);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.toast-body {
+  padding: 0.75rem;
+  background-color: rgba(255, 255, 255, 0.95);
+  color: #212529;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.toast.show {
+  display: block !important;
 }
 
 /* Responsive Design */

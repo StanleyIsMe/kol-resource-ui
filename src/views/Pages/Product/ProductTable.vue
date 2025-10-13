@@ -1,7 +1,7 @@
 <template>
   <b-card no-body class="bg-default shadow">
     <b-card-header class="bg-transparent border-0">
-      <h3 class="mb-4 text-white">Product Management</h3>
+      <!-- <h3 class="mb-4 text-white">Product Management</h3> -->
 
       <!-- Search & Create Section -->
       <b-card class="product-card mb-4">
@@ -27,7 +27,7 @@
               </b-button>
 
               <a href="#/products-edit" class="btn btn-success product-btn">
-                <i class="ni ni-fat-add mr-2"></i> Create Product
+                <i class="ni ni-fat-add mr-2"></i> Create
               </a>
             </b-col>
           </b-row>
