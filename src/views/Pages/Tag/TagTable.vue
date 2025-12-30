@@ -135,7 +135,7 @@ export default {
             response.data.forEach((tag) => {
               this.tags.push({
                 name: tag.name,
-                time: "2024-01-01 00:00:00",
+                time: new Date(tag.created_at).toLocaleString(),
               });
             });
 

@@ -134,7 +134,7 @@ export default {
             response.data.forEach((product) => {
               this.products.push({
                 name: product.name,
-                time: "2024-01-01 00:00:00",
+                time: new Date(product.created_at).toLocaleString(),
               });
             });
 
