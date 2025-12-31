@@ -69,6 +69,11 @@ const routes = [
         path: '/email',
         name: 'email',
         component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/Email.vue')
+      },
+      {
+        path: '/email-senders',
+        name: 'email-senders',
+        component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/EmailSenders.vue')
       }
     ]
   },

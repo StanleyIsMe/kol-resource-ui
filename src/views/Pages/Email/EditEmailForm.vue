@@ -853,23 +853,47 @@ export default {
     
     // API methods
     listSenders() {
-      // Fake API implementation for now
-      const fakeSenders = [
-        { id: "uuid-1", name: "stanley_01", email: "stanley01@gmail.com" },
-        { id: "uuid-2", name: "marketing_team", email: "marketing@company.com" },
-        { id: "uuid-3", name: "admin_user", email: "admin@company.com" }
-      ];
-      
-      this.senderOptions = [];
-      fakeSenders.forEach((sender) => {
-        this.senderOptions.push({
-          text: `${sender.name} (${sender.email})`,
-          value: sender.id,
+      const url = process.env.VUE_APP_KOL_API_URL + "/api/v1/email_senders";
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      };
+
+      this.axios
+        .get(url, config)
+        .then((response) => {
+          if (response.status == 200) {
+            this.senderOptions = [];
+            const senders = response.data.email_senders || [];
+            senders.forEach((sender) => {
+              this.senderOptions.push({
+                text: `${sender.name} (${sender.email})`,
+                value: sender.id,
+              });
+              this.senderMap.set(sender.id, sender);
+            });
+          }
+          console.log("Email senders loaded:", response.data);
+        })
+        .catch((error) => {
+          console.error("Error loading email senders:", error);
+
+          if (error.response && error.response.status === 401) {
+            this.$router.push({ name: "login" });
+            return;
+          }
+
+          this.$bvToast.toast("Failed to load email senders", {
+            title: "Error",
+            variant: "danger",
+            solid: true,
+            autoHideDelay: 3000,
+            toaster: "b-toaster-top-right",
+          });
         });
-        this.senderMap.set(sender.id, sender);
-      });
-      
-      console.log("Fake senders loaded:", fakeSenders);
     },
     listProducts() {
       const url = process.env.VUE_APP_KOL_API_URL + "/api/v1/products";

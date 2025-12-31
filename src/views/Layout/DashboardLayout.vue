@@ -63,6 +63,14 @@
 
         <sidebar-item
                 :link="{
+                  name: 'Email Sender',
+                  path: '/email-senders',
+                  icon: 'ni ni-send text-orange'
+                }">
+        </sidebar-item>
+
+        <sidebar-item
+                :link="{
                   name: 'KOL',
                   path: '/kols',
                   icon: 'ni ni-user-run text-red'
