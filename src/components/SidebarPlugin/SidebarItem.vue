@@ -15,12 +15,14 @@
     >
       <template v-if="addLink">
         <span class="nav-link-text">
-          {{ link.name }} <b class="caret"></b>
+          {{ link.name }}
         </span>
+        <b class="caret"></b>
       </template>
       <template v-else>
         <i :class="link.icon"></i>
-        <span class="nav-link-text">{{ link.name }} <b class="caret"></b></span>
+        <span class="nav-link-text">{{ link.name }}</span>
+        <b class="caret"></b>
       </template>
     </a>
 
@@ -283,6 +285,70 @@ export default {
 /* Add pulse to active icons */
 .nav-item .nav-link.active i {
   animation: pulse 2s ease-in-out infinite;
+}
+
+/* Sub-menu styling */
+.nav-sm {
+  margin-left: 20px;
+  margin-top: 8px;
+  
+  .nav-item {
+    margin-bottom: 4px;
+    
+    .nav-link {
+      padding: 10px 15px;
+      font-size: 0.9rem;
+      background: rgba(255,255,255,0.05);
+      border-left: 3px solid transparent;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        background: rgba(255,255,255,0.15);
+        border-left-color: rgba(255,255,255,0.5);
+        transform: translateX(5px);
+      }
+      
+      &.active {
+        background: rgba(255,255,255,0.2);
+        border-left-color: #ffc107;
+        color: #ffc107;
+      }
+      
+      i {
+        font-size: 1rem;
+        margin-right: 10px;
+      }
+    }
+  }
+}
+
+/* Caret icon styling for menu items */
+.caret {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 8px;
+  vertical-align: middle;
+  border-top: 4px dashed;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+  transition: transform 0.3s ease;
+  float: right;
+  margin-top: 6px;
+}
+
+/* Hide Bootstrap default caret from navbar-vertical.scss */
+.sidebar-menu-item.nav-link[data-toggle="collapse"]::after {
+  display: none !important;
+  content: none !important;
+}
+
+.sidebar-menu-item[aria-expanded="false"] .caret {
+  transform: rotate(-90deg);
+}
+
+.sidebar-menu-item[aria-expanded="true"] .caret {
+  transform: rotate(0deg);
 }
 
 /* Special hover effects for different menu items */

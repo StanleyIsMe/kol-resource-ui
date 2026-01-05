@@ -1,0 +1,41 @@
+<template>
+  <div>
+    <div>
+      <div class="mt-5"></div>
+      <email-job-table></email-job-table>
+    </div>
+  </div>
+</template>
+<script>
+  import { Table, TableColumn } from 'element-ui';
+  import EmailJobTable from "./EmailJob/EmailJobTable";
+
+  export default {
+    components: {
+      EmailJobTable,
+      [Table.name]: Table,
+      [TableColumn.name]: TableColumn
+    },
+    data() {
+      return {
+      };
+    }
+  };
+</script>
+<style>
+.el-table.table-dark{
+  background-color: #172b4d;
+  color: #f8f9fe;
+}
+
+.el-table.table-dark th,
+.el-table.table-dark tr{
+  background-color: #172b4d;
+}
+
+.el-table.table-dark td,
+.el-table.table-dark th.is-leaf{
+  border-bottom: none;
+}
+</style>
+

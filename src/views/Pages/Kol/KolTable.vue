@@ -156,12 +156,20 @@
       <el-table-column label="Social Media" min-width="120px" align="center">
         <template v-slot="{ row }">
           <a
+            v-if="hasSocialMedia(row.social_media)"
             :href="ensureAbsoluteUrl(row.social_media)"
             target="_blank"
             class="btn btn-sm btn-primary"
           >
             <i class="ni ni-world-2 mr-1"></i> View
           </a>
+          <span
+            v-else
+            class="btn btn-sm btn-secondary disabled"
+            style="cursor: not-allowed; opacity: 0.6;"
+          >
+            <i class="ni ni-world-2 mr-1"></i> View
+          </span>
         </template>
       </el-table-column>
 
@@ -408,6 +416,9 @@ export default {
 
       // Return mapped icon or default tag icon
       return iconMap[tagName] || "ni ni-tag";
+    },
+    hasSocialMedia(url) {
+      return url && url.trim() !== "";
     },
     ensureAbsoluteUrl(url) {
       if (!url) return "#";

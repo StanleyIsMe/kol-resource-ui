@@ -64,9 +64,9 @@
                 <base-input
                   type="text"
                   label="Social Media"
-                  placeholder="Instagram, TikTok, etc."
+                  placeholder="Instagram, TikTok, etc. (Optional)"
                   v-model="kol.social_media"
-                  :rules="{required: true, max: 255}"
+                  :rules="{max: 255}"
                   name="social_media"
                   addon-left-icon="ni ni-world"
                 >
@@ -88,7 +88,7 @@
           <div class="form-section mb-5">
             <h6 class="section-title mb-4">
               <i class="ni ni-align-left-2 mr-2"></i>
-              Description
+              Description <span class="text-muted" style="font-size: 0.85rem; font-weight: normal;">(Optional)</span>
             </h6>
             
             <b-form-group
@@ -100,9 +100,9 @@
               <b-form-textarea
                 rows="4"
                 id="about-form-textarea"
-                placeholder="Describe the KOL's background, expertise, and audience..."
+                placeholder="Describe the KOL's background, expertise, and audience... (Optional)"
                 v-model="kol.description"
-                :rules="{required: true, max: 500}"
+                :rules="{max: 500}"
                 name="description"
                 class="modern-textarea"
               ></b-form-textarea>
@@ -110,20 +110,27 @@
           </div>
 
           <!-- Tags Section -->
-          <div class="form-section mb-5">
+          <div class="form-section mb-5" :class="{ 'tags-error': tagsError }">
             <h6 class="section-title mb-4">
               <i class="ni ni-tag mr-2"></i>
-              Tags & Categories
+              Tags & Categories <span class="text-danger">*</span>
             </h6>
             
-            <b-form-group label="" label-for="tags-component-select">
+            <b-form-group 
+              label="" 
+              label-for="tags-component-select"
+              :invalid-feedback="tagsError ? 'At least one tag is required' : ''"
+              :state="tagsError === null ? null : !tagsError"
+            >
               <b-form-tags
                 id="tags-component-select"
                 v-model="kol.tags"
                 size="lg"
                 class="mb-2 modern-tags"
+                :class="{ 'is-invalid': tagsError }"
                 add-on-change
                 no-outer-focus
+                @input="validateTags"
               >
                 <template
                   v-slot="{
@@ -208,7 +215,8 @@ export default {
       value: [],
       selectedTagIDs: [],
       tagMap: new Map(),
-      isCreate: false
+      isCreate: false,
+      tagsError: null, // null = not validated yet, true = error, false = valid
     };
   },
   computed: {
@@ -216,11 +224,11 @@ export default {
       return this.options.filter((opt) => this.kol.tags.indexOf(opt.value) === -1);
     },
     isFormValid() {
+      const tagsValid = this.kol.tags && this.kol.tags.length > 0;
       return this.kol.name && 
              this.kol.email && 
-             this.kol.social_media && 
              this.kol.sex && 
-             this.kol.description;
+             tagsValid;
     },
   },
   mounted() {
@@ -234,6 +242,13 @@ export default {
     }
   },
   methods: {
+    validateTags() {
+      if (this.kol.tags && this.kol.tags.length > 0) {
+        this.tagsError = false;
+      } else {
+        this.tagsError = true;
+      }
+    },
     getCustomTagDisplay(tag) {
       // 自定義標籤的顯示方式
       return this.tagMap.get(tag);
@@ -317,6 +332,20 @@ export default {
         });
     },
     onSubmit() {
+      // Validate tags before submission
+      this.validateTags();
+      
+      if (!this.kol.tags || this.kol.tags.length === 0) {
+        this.$bvToast.toast("Please select at least one tag", {
+          title: "Validation Error",
+          variant: "danger",
+          solid: true,
+          autoHideDelay: 3000,
+          toaster: "b-toaster-top-right",
+        });
+        return;
+      }
+
       let url = process.env.VUE_APP_KOL_API_URL + "/api/v1/kols";
 
       let requestBody = {
@@ -595,6 +624,20 @@ select.form-control {
   border: 2px solid rgba(255, 255, 255, 0.1) !important;
   border-radius: 8px !important;
   padding: 12px !important;
+  transition: all 0.3s ease;
+}
+
+.modern-tags.is-invalid {
+  border-color: #f5365c !important;
+  background-color: rgba(245, 54, 92, 0.1) !important;
+}
+
+.tags-error {
+  border-color: rgba(245, 54, 92, 0.3) !important;
+}
+
+.tags-error .section-title {
+  color: #f5365c !important;
 }
 
 .tags-display {

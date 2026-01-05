@@ -56,17 +56,31 @@
         <sidebar-item
                 :link="{
                   name: 'Email',
-                  path: '/email',
                   icon: 'ni ni-email-83 text-red'
-                }">
-        </sidebar-item>
-
-        <sidebar-item
-                :link="{
-                  name: 'Email Sender',
-                  path: '/email-senders',
-                  icon: 'ni ni-send text-orange'
-                }">
+                }"
+                :menu="true"
+        >
+          <sidebar-item
+                  :link="{
+                    name: 'Send Email',
+                    path: '/email',
+                    icon: 'ni ni-email-83 text-red'
+                  }">
+          </sidebar-item>
+          <sidebar-item
+                  :link="{
+                    name: 'Email Sender',
+                    path: '/email-senders',
+                    icon: 'ni ni-send text-orange'
+                  }">
+          </sidebar-item>
+          <sidebar-item
+                  :link="{
+                    name: 'Email Job',
+                    path: '/email-jobs',
+                    icon: 'ni ni-email-83 text-blue'
+                  }">
+          </sidebar-item>
         </sidebar-item>
 
         <sidebar-item

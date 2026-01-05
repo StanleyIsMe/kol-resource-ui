@@ -722,7 +722,7 @@ export default {
 
       this.form.emailBody = processedContent;
 
-      const url = process.env.VUE_APP_KOL_API_URL + "/api/v1/send_emails";
+      const url = process.env.VUE_APP_KOL_API_URL + "/api/v1/email_jobs";
 
       const config = {
         headers: {
@@ -736,6 +736,7 @@ export default {
         email_content: processedContent,
         product_id: this.form.product,
         kol_ids: this.form.kols,
+        sender_id: this.form.sender,
         images: images,
       };
 
@@ -752,13 +753,20 @@ export default {
         .post(url, requestBody, config)
         .then((response) => {
           if (response.status == 200) {
-            this.$bvToast.toast(`成功發送郵件給 ${this.form.kols.length} 位KOL`, {
-              title: "發送成功",
-              variant: "success",
-              solid: true,
-              autoHideDelay: 5000,
-              toaster: 'b-toaster-top-right'
-            });
+            const kolCount = this.form.kols.length;
+            const subject = this.form.subject;
+            
+            this.$bvToast.toast(
+              `郵件「${subject}」已成功加入發送佇列，將發送給 ${kolCount} 位KOL`,
+              {
+                title: "發送成功",
+                variant: "success",
+                solid: true,
+                autoHideDelay: 6000,
+                toaster: 'b-toaster-top-right',
+                appendToast: false
+              }
+            );
             // Reset form after successful send
             this.onReset();
           }

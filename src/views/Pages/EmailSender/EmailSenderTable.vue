@@ -43,10 +43,10 @@
       </el-table-column>
 
       <!-- Rate Limit -->
-      <el-table-column label="Rate Limit" min-width="120px" prop="rate_limit">
+      <el-table-column label="Rate Limit (DAY)" min-width="120px" prop="rate_limit">
         <template v-slot="{ row }">
           <b-badge variant="info" class="text-uppercase">
-            {{ row.rate_limit }} / hour
+            {{ row.rate_limit }}
           </b-badge>
         </template>
       </el-table-column>
@@ -83,7 +83,17 @@
       size="lg"
       centered
       @hidden="resetForm"
+      @ok="handleModalOk"
+      @cancel="handleModalCancel"
+      :ok-disabled="isSubmitting"
+      :cancel-disabled="isSubmitting"
     >
+      <template #modal-ok>
+        <b-spinner v-if="isSubmitting" small class="mr-2"></b-spinner>
+        {{ isEditMode ? "Update" : "Create" }}
+      </template>
+      <template #modal-cancel>Cancel</template>
+
       <b-form @submit.stop.prevent="handleSubmit">
         <b-form-group
           id="input-group-name"
@@ -157,18 +167,6 @@
           ></b-form-input>
         </b-form-group>
       </b-form>
-
-      <template #modal-footer="{ ok, cancel }">
-        <b-button variant="secondary" @click="cancel()">Cancel</b-button>
-        <b-button
-          variant="primary"
-          @click="handleSubmit"
-          :disabled="isSubmitting"
-        >
-          <b-spinner v-if="isSubmitting" small class="mr-2"></b-spinner>
-          {{ isEditMode ? "Update" : "Create" }}
-        </b-button>
-      </template>
     </b-modal>
   </b-card>
 </template>
@@ -339,8 +337,37 @@ export default {
       }
       return true;
     },
-    handleSubmit() {
+    handleModalOk(bvModalEvent) {
+      // Always prevent default close behavior - we'll close manually after API success
+      bvModalEvent.preventDefault();
+      
+      console.log("Modal OK clicked", {
+        isEditMode: this.isEditMode,
+        formId: this.form.id,
+      });
+      
+      // Validate and submit
+      this.handleSubmit();
+    },
+    handleModalCancel() {
+      // Modal will close automatically
+      this.resetForm();
+    },
+    handleSubmit(event) {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      console.log("handleSubmit called", {
+        isEditMode: this.isEditMode,
+        formId: this.form.id,
+        form: { ...this.form, key: "***" },
+      });
+
+      // Validate form
       if (!this.validateForm()) {
+        console.log("Validation failed - form will stay open");
         this.$bvToast.toast("Please fill in all required fields correctly", {
           title: "Validation Error",
           variant: "danger",
@@ -348,15 +375,25 @@ export default {
           autoHideDelay: 3000,
           toaster: "b-toaster-top-right",
         });
-        return;
+        // Don't close modal - validation failed
+        return false;
       }
 
+      console.log("Validation passed, calling onSubmit");
+      // Call onSubmit - it will handle closing the modal on success
       this.onSubmit();
+      return true;
     },
     onSubmit() {
       if (this.isSubmitting) return;
 
       this.isSubmitting = true;
+
+      console.log("Submitting form:", {
+        isEditMode: this.isEditMode,
+        formId: this.form.id,
+        form: this.form,
+      });
 
       const url = this.isEditMode
         ? `${process.env.VUE_APP_KOL_API_URL}/api/v1/email_senders/${this.form.id}`
@@ -368,6 +405,12 @@ export default {
         key: this.form.key,
         rate_limit: this.form.rate_limit,
       };
+
+      console.log("API Request:", {
+        method: this.isEditMode ? "PUT" : "POST",
+        url: url,
+        body: { ...requestBody, key: "***" }, // Hide key in logs
+      });
 
       const config = {
         headers: {
@@ -382,6 +425,7 @@ export default {
 
       request
         .then((response) => {
+          console.log("API Response:", response);
           if (response.status === 200 || response.status === 201) {
             this.$bvToast.toast(
               `Email sender ${this.isEditMode ? "updated" : "created"} successfully`,
@@ -394,9 +438,12 @@ export default {
               }
             );
 
-            this.$bvModal.hide(this.modalId);
-            this.resetForm();
-            this.listEmailSenders();
+            // Close modal and refresh list
+            this.$nextTick(() => {
+              this.$bvModal.hide(this.modalId);
+              this.resetForm();
+              this.listEmailSenders();
+            });
           }
         })
         .catch((error) => {
@@ -467,22 +514,52 @@ export default {
   border-bottom: 2px solid #34495e !important;
 }
 
-.el-table.table-dark td {
-  border-bottom: 1px solid #34495e !important;
-  padding: 12px 8px !important;
+/* Default row background - ensure dark background for all rows */
+.el-table.table-dark .el-table__body tr {
+  background-color: #1f3a5f !important;
 }
 
-/* Override el-table hover behavior */
+.el-table.table-dark .el-table__body tr > td {
+  background-color: #1f3a5f !important;
+  border-bottom: 1px solid #34495e !important;
+  padding: 12px 8px !important;
+  color: #fff !important;
+}
+
+/* Zebra striping for better readability */
+.el-table.table-dark .el-table__body tr:nth-child(even) {
+  background-color: #1a3365 !important;
+}
+
+.el-table.table-dark .el-table__body tr:nth-child(even) > td {
+  background-color: #1a3365 !important;
+}
+
+/* Override el-table hover behavior - make it more prominent */
 .el-table.table-dark .el-table__body tr:hover > td,
 .el-table.table-dark .el-table__body tr:hover {
-  background-color: #1a3365 !important;
+  background-color: #2a4a7a !important;
   color: #fff !important;
+  transition: background-color 0.2s ease;
 }
 
 .el-table.table-dark .el-table__body tr:hover .text-sm,
 .el-table.table-dark .el-table__body tr:hover .font-weight-600,
 .el-table.table-dark .el-table__body tr:hover .name {
   color: #fff !important;
+}
+
+/* Ensure all text elements are visible */
+.el-table.table-dark .el-table__body tr .font-weight-600,
+.el-table.table-dark .el-table__body tr .name,
+.el-table.table-dark .el-table__body tr span {
+  color: #fff !important;
+}
+
+/* Ensure badges and icons are visible */
+.el-table.table-dark .el-table__body tr .badge,
+.el-table.table-dark .el-table__body tr i {
+  color: inherit !important;
 }
 
 /* Empty state styling */
