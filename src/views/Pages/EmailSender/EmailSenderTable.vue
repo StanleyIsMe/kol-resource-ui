@@ -85,7 +85,7 @@
       @hidden="resetForm"
       @ok="handleModalOk"
       @cancel="handleModalCancel"
-      :ok-disabled="isSubmitting"
+      :ok-disabled="isSubmitting || (isEditMode && !hasFormChanged)"
       :cancel-disabled="isSubmitting"
     >
       <template #modal-ok>
@@ -136,15 +136,15 @@
           label-for="input-key"
           :invalid-feedback="keyFeedback"
           :state="keyState"
-          description="API key or password for the email sender"
+          :description="isEditMode ? 'Leave empty if you don\'t want to change the key' : 'API key or password for the email sender'"
         >
           <b-form-input
             id="input-key"
             v-model="form.key"
             type="password"
-            placeholder="Enter API key or password"
+            :placeholder="isEditMode ? 'Leave empty to keep current key' : 'Enter API key or password'"
             :state="keyState"
-            required
+            :required="!isEditMode"
           ></b-form-input>
         </b-form-group>
 
@@ -193,9 +193,30 @@ export default {
         key: "",
         rate_limit: 1,
       },
+      originalForm: {
+        name: "",
+        email: "",
+        key: "",
+        rate_limit: 1,
+      },
     };
   },
   computed: {
+    hasFormChanged() {
+      // In edit mode, check if any field has been changed
+      if (!this.isEditMode) return true; // Always enabled in create mode
+      
+      // Check each field for changes
+      const nameChanged = this.form.name !== this.originalForm.name;
+      const emailChanged = this.form.email !== this.originalForm.email;
+      const rateLimitChanged = this.form.rate_limit !== this.originalForm.rate_limit;
+      
+      // For key field: only consider it changed if it's not empty and different from original
+      // If key was empty and is still empty, it's not considered changed
+      const keyChanged = this.form.key !== "" && this.form.key !== this.originalForm.key;
+      
+      return nameChanged || emailChanged || keyChanged || rateLimitChanged;
+    },
     nameState() {
       if (!this.form.name) return null;
       return this.form.name.length <= 50;
@@ -216,10 +237,18 @@ export default {
       return "";
     },
     keyState() {
+      // In edit mode, key is optional if it remains empty (not being changed)
+      if (this.isEditMode && this.form.key === "" && this.originalForm.key === "") {
+        return null; // Optional in edit mode if unchanged
+      }
       if (!this.form.key) return null;
       return this.form.key.length > 0;
     },
     keyFeedback() {
+      // In edit mode, key is optional if it remains empty
+      if (this.isEditMode && this.form.key === "" && this.originalForm.key === "") {
+        return ""; // No error if key is empty and unchanged in edit mode
+      }
       if (!this.form.key) return "Key is required";
       return "";
     },
@@ -310,11 +339,25 @@ export default {
         // Continue with existing data
       }
 
+      // Save original values for comparison
+      this.originalForm = {
+        name: this.form.name,
+        email: this.form.email,
+        key: this.form.key, // Will be empty string since API doesn't return it
+        rate_limit: this.form.rate_limit,
+      };
+
       this.$bvModal.show(this.modalId);
     },
     resetForm() {
       this.form = {
         id: null,
+        name: "",
+        email: "",
+        key: "",
+        rate_limit: 1,
+      };
+      this.originalForm = {
         name: "",
         email: "",
         key: "",
@@ -329,8 +372,19 @@ export default {
       if (!this.form.email || !this.emailState) {
         return false;
       }
-      if (!this.form.key) {
+      // In edit mode, key is only required if it's being changed (not empty)
+      // In create mode, key is always required
+      if (!this.isEditMode && !this.form.key) {
         return false;
+      }
+      // In edit mode, if key is provided, it must be non-empty
+      if (this.isEditMode && this.form.key !== "" && this.form.key === this.originalForm.key) {
+        // Key hasn't changed, validation passes
+      } else if (this.isEditMode && this.form.key !== "" && this.form.key !== this.originalForm.key) {
+        // Key is being changed, must be non-empty
+        if (!this.form.key) {
+          return false;
+        }
       }
       if (!this.form.rate_limit || this.form.rate_limit < 1) {
         return false;
@@ -399,17 +453,41 @@ export default {
         ? `${process.env.VUE_APP_KOL_API_URL}/api/v1/email_senders/${this.form.id}`
         : `${process.env.VUE_APP_KOL_API_URL}/api/v1/email_senders`;
 
-      const requestBody = {
-        name: this.form.name,
-        email: this.form.email,
-        key: this.form.key,
-        rate_limit: this.form.rate_limit,
-      };
+      let requestBody;
+      if (this.isEditMode) {
+        // In edit mode, only include fields that have changed (PATCH-like behavior)
+        requestBody = {};
+        
+        // Check each field and only include if changed
+        if (this.form.name !== this.originalForm.name) {
+          requestBody.name = this.form.name;
+        }
+        if (this.form.email !== this.originalForm.email) {
+          requestBody.email = this.form.email;
+        }
+        if (this.form.rate_limit !== this.originalForm.rate_limit) {
+          requestBody.rate_limit = this.form.rate_limit;
+        }
+        
+        // Special handling for key field: only include if it's not empty string
+        // If key was empty originally and is still empty, don't include it
+        if (this.form.key !== "" && this.form.key !== this.originalForm.key) {
+          requestBody.key = this.form.key;
+        }
+      } else {
+        // In create mode, include all fields
+        requestBody = {
+          name: this.form.name,
+          email: this.form.email,
+          key: this.form.key,
+          rate_limit: this.form.rate_limit,
+        };
+      }
 
       console.log("API Request:", {
         method: this.isEditMode ? "PUT" : "POST",
         url: url,
-        body: { ...requestBody, key: "***" }, // Hide key in logs
+        body: { ...requestBody, key: requestBody.key ? "***" : undefined }, // Hide key in logs
       });
 
       const config = {
