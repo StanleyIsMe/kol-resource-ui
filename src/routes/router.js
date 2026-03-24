@@ -4,11 +4,10 @@ import routes from './routes';
 
 Vue.use(VueRouter);
 
-// configure router
 const router = new VueRouter({
-  routes, // short for routes: routes
+  routes,
   linkActiveClass: 'active',
-  scrollBehavior: (to, from ,savedPosition) => {
+  scrollBehavior: (to, from, savedPosition) => {
     if (savedPosition) {
       return savedPosition;
     }
@@ -16,6 +15,17 @@ const router = new VueRouter({
       return { selector: to.hash };
     }
     return { x: 0, y: 0 };
+  }
+});
+
+router.beforeEach((to, from, next) => {
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+  const token = localStorage.getItem('token');
+
+  if (requiresAuth && !token) {
+    next({ name: 'login' });
+  } else {
+    next();
   }
 });
 

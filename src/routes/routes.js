@@ -1,105 +1,88 @@
 import DashboardLayout from '@/views/Layout/DashboardLayout.vue';
 import AuthLayout from '@/views/Pages/AuthLayout.vue';
-
 import NotFound from '@/views/NotFoundPage.vue';
 
 const routes = [
   {
     path: '/',
-    redirect: 'dashboard',
+    redirect: '/dashboard',
     component: DashboardLayout,
+    meta: { requiresAuth: true },
     children: [
       {
         path: '/dashboard',
         name: 'dashboard',
-        meta: {
-          hideFooter: true
-        },
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "demo" */ '../views/Dashboard.vue')
-      },
-      {
-        path: '/icons',
-        name: 'icons',
-        component: () => import(/* webpackChunkName: "demo" */ '../views/Icons.vue')
-      },
-      {
-        path: '/profile',
-        name: 'profile',
-        component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/UserProfile.vue')
-      },
-      {
-        path: '/maps',
-        name: 'maps',
-        component: () => import(/* webpackChunkName: "demo" */ '../views/GoogleMaps.vue')
-      },
-      {
-        path: '/tables',
-        name: 'tables',
-        component: () => import(/* webpackChunkName: "demo" */ '../views/RegularTables.vue')
+        meta: { requiresAuth: true, hideFooter: true },
+        component: () => import('../views/Dashboard.vue')
       },
       {
         path: '/tags',
         name: 'tags',
-        component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/Tags.vue')
+        meta: { requiresAuth: true },
+        component: () => import('../views/Pages/Tags.vue')
       },
       {
         path: '/kols',
         name: 'kols',
-        component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/Kols.vue')
+        meta: { requiresAuth: true },
+        component: () => import('../views/Pages/Kols.vue')
       },
       {
         path: '/products',
         name: 'products',
-        component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/Products.vue')
+        meta: { requiresAuth: true },
+        component: () => import('../views/Pages/Products.vue')
       },
       {
         path: '/kols-edit',
         name: 'kols-edit',
-        component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/EditKols.vue')
+        meta: { requiresAuth: true },
+        component: () => import('../views/Pages/EditKols.vue')
       },
       {
         path: '/products-edit',
         name: 'products-edit',
-        component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/EditProducts.vue')
+        meta: { requiresAuth: true },
+        component: () => import('../views/Pages/EditProducts.vue')
       },
       {
         path: '/email',
         name: 'email',
-        component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/Email.vue')
+        meta: { requiresAuth: true },
+        component: () => import('../views/Pages/Email.vue')
       },
       {
         path: '/email-senders',
         name: 'email-senders',
-        component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/EmailSenders.vue')
+        meta: { requiresAuth: true },
+        component: () => import('../views/Pages/EmailSenders.vue')
       },
       {
         path: '/email-jobs',
         name: 'email-jobs',
-        component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/EmailJobs.vue')
+        meta: { requiresAuth: true },
+        component: () => import('../views/Pages/EmailJobs.vue')
       }
     ]
   },
   {
-    path: '/',
-    redirect: 'login',
+    path: '/auth',
+    redirect: '/login',
     component: AuthLayout,
     children: [
       {
         path: '/login',
         name: 'login',
-        component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/Login.vue')
+        component: () => import('../views/Pages/Login.vue')
       },
       {
         path: '/register',
         name: 'register',
-        component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/Register.vue')
-      },
-      { path: '*', component: NotFound }
+        component: () => import('../views/Pages/Register.vue')
+      }
     ]
-  }
+  },
+  { path: '*', component: NotFound }
 ];
 
 export default routes;

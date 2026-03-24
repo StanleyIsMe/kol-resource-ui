@@ -1,46 +1,14 @@
 <template>
   <div>
-    <div>
-      <div class="mt-5"></div>
-      <product-table></product-table>
-    </div>
+    <product-table></product-table>
   </div>
 </template>
 <script>
-  import { Dropdown, DropdownItem, DropdownMenu, Table, TableColumn } from 'element-ui';
-  // import projects from '../Tables/projects'
-  // import LightTable from "../Tables/RegularTables/LightTable";
   import ProductTable from "./Product/ProductTable";
 
   export default {
     components: {
-      // LightTable,
       ProductTable,
-      [Dropdown.name]: Dropdown,
-      [DropdownItem.name]: DropdownItem,
-      [DropdownMenu.name]: DropdownMenu,
-      [Table.name]: Table,
-      [TableColumn.name]: TableColumn
-    },
-    data() {
-      return {
-      };
     }
   };
 </script>
-<style>
-.el-table.table-dark{
-  background-color: #172b4d;
-  color: #f8f9fe;
-}
-
-.el-table.table-dark th,
-.el-table.table-dark tr{
-  background-color: #172b4d;
-}
-
-.el-table.table-dark td,
-.el-table.table-dark th.is-leaf{
-  border-bottom: none;
-}
-</style>

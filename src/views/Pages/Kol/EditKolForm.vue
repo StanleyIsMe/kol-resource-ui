@@ -1,22 +1,16 @@
 <template>
-  <b-card no-body class="bg-default shadow edit-kol-card">
-    <b-card-header class="bg-transparent border-0">
+  <b-card no-body class="gcp-card-surface edit-kol-card">
+    <b-card-header class="bg-white border-bottom" style="border-color: #dadce0 !important;">
       <b-row align-v="center">
         <b-col cols="8">
-          <h3 class="mb-0 text-white">
+          <h5 class="mb-0" style="color: #202124;">
             <i class="ni ni-single-02 mr-2"></i>
             {{ isCreate ? "Create KOL" : "Edit KOL" }}
-          </h3>
+          </h5>
         </b-col>
         <b-col cols="4" class="text-right">
-          <b-button 
-            variant="outline-light" 
-            size="sm" 
-            @click="$router.push({name: 'kols'})"
-            class="back-btn"
-          >
-            <i class="ni ni-bold-left mr-1"></i>
-            Back to KOLs
+          <b-button variant="outline-secondary" size="sm" @click="$router.push({name: 'kols'})">
+            <i class="ni ni-bold-left mr-1"></i> Back to KOLs
           </b-button>
         </b-col>
       </b-row>
@@ -25,52 +19,27 @@
     <b-card-body class="px-lg-5 py-lg-4">
       <validation-observer v-slot="{ handleSubmit }" ref="formValidator">
         <b-form @submit.prevent="onSubmit">
-          <!-- Information Section -->
-          <div class="form-section mb-5">
-            <h6 class="section-title mb-4">
-              <i class="ni ni-badge mr-2"></i>
-              Basic Information
+          <div class="form-section mb-4">
+            <h6 class="section-title mb-3">
+              <i class="ni ni-badge mr-2"></i> Basic Information
             </h6>
-            
             <b-row>
               <b-col lg="6" class="mb-3">
-                <base-input
-                  type="text"
-                  label="KOL Name"
-                  placeholder="Enter KOL name"
-                  v-model="kol.name"
-                  :rules="{required: true, max: 50}"
-                  name="name"
-                  addon-left-icon="ni ni-single-02"
-                >
-                </base-input>
+                <base-input type="text" label="KOL Name" placeholder="Enter KOL name"
+                  v-model="kol.name" :rules="{required: true, max: 50}" name="name"
+                  addon-left-icon="ni ni-single-02"></base-input>
               </b-col>
               <b-col lg="6" class="mb-3">
-                <base-input
-                  type="email"
-                  label="Email Address"
-                  placeholder="kol@example.com"
-                  v-model="kol.email"
-                  :rules="{required: true, email: true}"
-                  name="email"
-                  addon-left-icon="ni ni-email-83"
-                >
-                </base-input>
+                <base-input type="email" label="Email Address" placeholder="kol@example.com"
+                  v-model="kol.email" :rules="{required: true, email: true}" name="email"
+                  addon-left-icon="ni ni-email-83"></base-input>
               </b-col>
             </b-row>
-            
             <b-row>
               <b-col lg="6" class="mb-3">
-                <base-input
-                  type="text"
-                  label="Social Media"
-                  placeholder="Instagram, TikTok, etc. (Optional)"
-                  v-model="kol.social_media"
-                  :rules="{max: 255}"
-                  name="social_media"
-                  addon-left-icon="ni ni-world"
-                >
-                </base-input>
+                <base-input type="text" label="Social Media" placeholder="Instagram, TikTok, etc. (Optional)"
+                  v-model="kol.social_media" :rules="{max: 255}" name="social_media"
+                  addon-left-icon="ni ni-world"></base-input>
               </b-col>
               <b-col lg="6" class="mb-3">
                 <base-input label="Gender" :rules="{required: true}" name="sex" addon-left-icon="ni ni-circle-08">
@@ -84,84 +53,36 @@
             </b-row>
           </div>
 
-          <!-- Description Section -->
-          <div class="form-section mb-5">
-            <h6 class="section-title mb-4">
-              <i class="ni ni-align-left-2 mr-2"></i>
-              Description <span class="text-muted" style="font-size: 0.85rem; font-weight: normal;">(Optional)</span>
+          <div class="form-section mb-4">
+            <h6 class="section-title mb-3">
+              <i class="ni ni-align-left-2 mr-2"></i> Description
+              <span class="text-muted" style="font-size: 0.8rem; font-weight: normal;">(Optional)</span>
             </h6>
-            
-            <b-form-group
-              label=""
-              label-class="form-control-label"
-              class="mb-0"
-              label-for="about-form-textarea"
-            >
-              <b-form-textarea
-                rows="4"
-                id="about-form-textarea"
-                placeholder="Describe the KOL's background, expertise, and audience... (Optional)"
-                v-model="kol.description"
-                :rules="{max: 500}"
-                name="description"
-                class="modern-textarea"
-              ></b-form-textarea>
+            <b-form-group label="" class="mb-0" label-for="about-form-textarea">
+              <b-form-textarea rows="4" id="about-form-textarea"
+                placeholder="Describe the KOL's background, expertise, and audience..."
+                v-model="kol.description" name="description"></b-form-textarea>
             </b-form-group>
           </div>
 
-          <!-- Tags Section -->
-          <div class="form-section mb-5" :class="{ 'tags-error': tagsError }">
-            <h6 class="section-title mb-4">
-              <i class="ni ni-tag mr-2"></i>
-              Tags & Categories <span class="text-danger">*</span>
+          <div class="form-section mb-4" :class="{ 'tags-error': tagsError }">
+            <h6 class="section-title mb-3">
+              <i class="ni ni-tag mr-2"></i> Tags & Categories <span class="text-danger">*</span>
             </h6>
-            
-            <b-form-group 
-              label="" 
-              label-for="tags-component-select"
+            <b-form-group label="" label-for="tags-component-select"
               :invalid-feedback="tagsError ? 'At least one tag is required' : ''"
-              :state="tagsError === null ? null : !tagsError"
-            >
-              <b-form-tags
-                id="tags-component-select"
-                v-model="kol.tags"
-                size="lg"
-                class="mb-2 modern-tags"
-                :class="{ 'is-invalid': tagsError }"
-                add-on-change
-                no-outer-focus
-                @input="validateTags"
-              >
-                <template
-                  v-slot="{
-                    tags,
-                    inputAttrs,
-                    inputHandlers,
-                    disabled,
-                    removeTag,
-                  }"
-                >
+              :state="tagsError === null ? null : !tagsError">
+              <b-form-tags id="tags-component-select" v-model="kol.tags" size="lg" class="mb-2"
+                :class="{ 'is-invalid': tagsError }" add-on-change no-outer-focus @input="validateTags">
+                <template v-slot="{ tags, inputAttrs, inputHandlers, disabled, removeTag }">
                   <div v-if="tags.length > 0" class="tags-display mb-3">
-                    <b-form-tag
-                      v-for="tag in tags"
-                      :key="tag"
-                      @remove="removeTag(tag)"
-                      :title="tag"
-                      :disabled="disabled"
-                      variant="info"
-                      class="tag-badge mr-2 mb-2"
-                    >
-                      <i class="ni ni-tag tag-icon mr-1"></i>
+                    <b-form-tag v-for="tag in tags" :key="tag" @remove="removeTag(tag)"
+                      :title="tag" :disabled="disabled" variant="info" class="tag-badge mr-2 mb-2">
                       {{ getCustomTagDisplay(tag) }}
                     </b-form-tag>
                   </div>
-                  <b-form-select
-                    v-bind="inputAttrs"
-                    v-on="inputHandlers"
-                    :disabled="disabled || availableOptions.length === 0"
-                    :options="availableOptions"
-                    class="modern-select"
-                  >
+                  <b-form-select v-bind="inputAttrs" v-on="inputHandlers"
+                    :disabled="disabled || availableOptions.length === 0" :options="availableOptions">
                     <template #first>
                       <option disabled value="">Choose a tag...</option>
                     </template>
@@ -171,25 +92,12 @@
             </b-form-group>
           </div>
 
-          <!-- Action Buttons -->
-          <div class="form-actions text-center pt-4">
-            <b-button 
-              type="submit" 
-              variant="success" 
-              size="lg"
-              class="submit-btn mr-3"
-              :disabled="!isFormValid"
-            >
+          <div class="form-actions text-center pt-3">
+            <b-button type="submit" variant="primary" size="lg" class="gcp-btn-primary mr-3" :disabled="!isFormValid">
               <i class="ni ni-check-bold mr-2"></i>
               {{ isCreate ? "Create KOL" : "Update KOL" }}
             </b-button>
-            <b-button 
-              variant="outline-light" 
-              size="lg"
-              @click="$router.push({name: 'kols'})"
-              class="cancel-btn"
-            >
-              <i class="ni ni-fat-remove mr-2"></i>
+            <b-button variant="outline-secondary" size="lg" @click="$router.push({name: 'kols'})">
               Cancel
             </b-button>
           </div>
@@ -202,21 +110,12 @@
 export default {
   data() {
     return {
-      kol: {
-        name: "",
-        description: "",
-        email: "",
-        sex: "",
-        social_media: "",
-        tags: [],
-      },
+      kol: { name: "", description: "", email: "", sex: "", social_media: "", tags: [] },
       tags: [],
       options: [],
-      value: [],
-      selectedTagIDs: [],
       tagMap: new Map(),
       isCreate: false,
-      tagsError: null, // null = not validated yet, true = error, false = valid
+      tagsError: null,
     };
   },
   computed: {
@@ -224,16 +123,11 @@ export default {
       return this.options.filter((opt) => this.kol.tags.indexOf(opt.value) === -1);
     },
     isFormValid() {
-      const tagsValid = this.kol.tags && this.kol.tags.length > 0;
-      return this.kol.name && 
-             this.kol.email && 
-             this.kol.sex && 
-             tagsValid;
+      return this.kol.name && this.kol.email && this.kol.sex && this.kol.tags && this.kol.tags.length > 0;
     },
   },
   mounted() {
     this.listTags();
-
     if (this.$route.query.id) {
       this.isCreate = false;
       this.getKolByID(this.$route.query.id);
@@ -243,450 +137,124 @@ export default {
   },
   methods: {
     validateTags() {
-      if (this.kol.tags && this.kol.tags.length > 0) {
-        this.tagsError = false;
-      } else {
-        this.tagsError = true;
-      }
+      this.tagsError = !(this.kol.tags && this.kol.tags.length > 0);
     },
     getCustomTagDisplay(tag) {
-      // 自定義標籤的顯示方式
-      return this.tagMap.get(tag);
+      return this.tagMap.get(tag) || tag;
     },
     listTags() {
       const url = process.env.VUE_APP_KOL_API_URL + "/api/v1/tags";
-
       const config = {
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer " + localStorage.getItem("token"),
-        },
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token") },
       };
-
-      this.axios
-        .get(url, config)
+      this.axios.get(url, config)
         .then((response) => {
-          if (response.status == 200) {
+          if (response.status === 200) {
             this.options = [];
             response.data.forEach((tag) => {
               this.tagMap.set(tag.id, tag.name);
-              this.options.push({
-                text: tag.name,
-                value: tag.id,
-              });
+              this.options.push({ text: tag.name, value: tag.id });
             });
           }
-          console.log("Response:", response.data);
-          // Handle successful response here
         })
-        .catch((error) => {
-          if (error.status == 401) {
-            this.$router.push({name: 'login'}) 
-
-            return;
-          }
-
-          console.error("Error:", error);
-          alert("Error:" + error.response.data);
-        });
+        .catch(() => {});
     },
     getKolByID(id) {
       const url = process.env.VUE_APP_KOL_API_URL + "/api/v1/kols/" + id;
-
       const config = {
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer " + localStorage.getItem("token"),
-        },
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token") },
       };
-
-      this.axios
-        .get(url, config)
+      this.axios.get(url, config)
         .then((response) => {
-          if (response.status == 200) {
-            
-            // response.data.forEach((kol) => {
-              this.kol.name = response.data.name;
-              this.kol.description = response.data.description;
-              this.kol.email = response.data.email;
-              this.kol.sex = response.data.sex;
-              this.kol.social_media = response.data.social_media;
-
-              response.data.tags.forEach((tag) => {
-                this.kol.tags.push(tag.id);
-              });
-            // });
+          if (response.status === 200) {
+            this.kol.name = response.data.name;
+            this.kol.description = response.data.description;
+            this.kol.email = response.data.email;
+            this.kol.sex = response.data.sex;
+            this.kol.social_media = response.data.social_media;
+            response.data.tags.forEach((tag) => { this.kol.tags.push(tag.id); });
           }
-          console.log("Response:", response.data);
-          // Handle successful response here
         })
-        .catch((error) => {
-          if (error.status == 401) {
-            this.$router.push({name: 'login'}) 
-
-            return;
-          }
-
-          console.error("Error:", error);
-          alert("Error:" + error.response.data);
-        });
+        .catch(() => {});
     },
     onSubmit() {
-      // Validate tags before submission
       this.validateTags();
-      
       if (!this.kol.tags || this.kol.tags.length === 0) {
-        this.$bvToast.toast("Please select at least one tag", {
-          title: "Validation Error",
-          variant: "danger",
-          solid: true,
-          autoHideDelay: 3000,
-          toaster: "b-toaster-top-right",
-        });
+        this.$bvToast.toast("Please select at least one tag", { title: "Validation Error", variant: "danger", solid: true, autoHideDelay: 3000, toaster: "b-toaster-top-right" });
         return;
       }
-
       let url = process.env.VUE_APP_KOL_API_URL + "/api/v1/kols";
-
-      let requestBody = {
-          name: this.kol.name,
-          email: this.kol.email,
-          description: this.kol.description,
-          sex: this.kol.sex,
-          social_media: this.kol.social_media,
-          tags: this.kol.tags
-        }
-      
-      // if (this.value.length > 0) {
-      //   this.value.forEach((tagName) => {
-      //     requestBody.tags.push(this.tagMap.get(tagName));
-      //   });
-      // }
-
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          "Authorization": "Bearer " + localStorage.getItem("token"),
-        }
-      }
-
+      const requestBody = {
+        name: this.kol.name, email: this.kol.email, description: this.kol.description,
+        sex: this.kol.sex, social_media: this.kol.social_media, tags: this.kol.tags,
+      };
+      const config = { headers: { "Content-Type": "application/json", Authorization: "Bearer " + localStorage.getItem("token") } };
       let resp;
       if (this.isCreate) {
-        resp = this.axios.post(url, requestBody, config)
+        resp = this.axios.post(url, requestBody, config);
       } else {
         url = url + "/" + this.$route.query.id;
-        resp = this.axios.put(url, requestBody, config)
+        resp = this.axios.put(url, requestBody, config);
       }
-
       resp.then((response) => {
-        if (response.status == 200) {
-          this.$router.push({name: 'kols'})
-        }
-      })
-      .catch((error) => {
-        if (error.status == 401) {
-          this.$router.push({name: 'login'}) 
-
-          return;
-        }
-
-        console.error("Error:", error);
-        alert("Error:" + error.response.data);
-      });
-
+          if (response.status === 200) { this.$router.push({ name: "kols" }); }
+        })
+        .catch((error) => {
+          const msg = (error.response && error.response.data && error.response.data.error_message) || "Failed to save KOL";
+          this.$bvToast.toast(msg, { title: "Error", variant: "danger", solid: true, autoHideDelay: 3000, toaster: "b-toaster-top-right" });
+        });
     },
   },
 };
 </script>
 <style scoped>
-/* Card styling to match KOL page */
 .edit-kol-card {
-  background-color: #27293d !important;
-  border: none !important;
-  box-shadow: 0 0 2rem 0 rgba(0, 0, 0, 0.15) !important;
-  border-left: 4px solid #5e72e4 !important;
+  border-radius: 8px;
 }
 
-/* Section styling */
 .form-section {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  padding: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
-}
-
-.form-section:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(94, 114, 228, 0.3);
+  background: #fafafa;
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid #dadce0;
 }
 
 .section-title {
-  color: #fff !important;
+  color: #202124;
   font-weight: 600;
-  font-size: 1.1rem;
-  letter-spacing: 0.5px;
-  border-bottom: 2px solid rgba(94, 114, 228, 0.2);
+  font-size: 0.9375rem;
   padding-bottom: 8px;
-}
-
-/* Button styling */
-.back-btn {
-  height: 38px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  font-size: 0.875rem;
-  border-color: rgba(255, 255, 255, 0.3);
-  color: #fff;
-  transition: all 0.3s ease;
-}
-
-.back-btn:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.5);
-  transform: translateY(-1px);
-}
-
-.submit-btn {
-  height: 50px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  font-size: 1rem;
-  background-color: #2dce89 !important;
-  border-color: #2dce89 !important;
-  padding: 0 30px;
-  transition: all 0.3s ease;
-}
-
-.submit-btn:hover {
-  background-color: #24a870 !important;
-  border-color: #24a870 !important;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(45, 206, 137, 0.3);
-}
-
-.submit-btn:disabled {
-  background-color: #6c757d !important;
-  border-color: #6c757d !important;
-  transform: none;
-  box-shadow: none;
-}
-
-.cancel-btn {
-  height: 50px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  font-size: 1rem;
-  border-color: rgba(255, 255, 255, 0.3);
-  color: #fff;
-  padding: 0 30px;
-  transition: all 0.3s ease;
-}
-
-.cancel-btn:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.5);
-  transform: translateY(-2px);
-}
-
-/* Form labels styling */
-.form-control-label {
-  color: #fff !important;
-}
-
-/* Make all text within form sections white */
-.form-section {
-  color: #fff !important;
-}
-
-.form-section * {
-  color: #fff !important;
-}
-
-.form-section input,
-.form-section select,
-.form-section textarea {
-  color: #fff !important;
-}
-
-.form-section option {
-  color: #333 !important;
-  background-color: #fff !important;
-}
-
-/* Fix dropdown menu visibility */
-.modern-select option {
-  color: #333 !important;
-  background-color: #fff !important;
-}
-
-/* Bootstrap Vue dropdown styling */
-.custom-select option {
-  color: #333 !important;
-  background-color: #fff !important;
-}
-
-/* Ensure dropdown is visible when opened */
-select:focus option {
-  color: #333 !important;
-  background-color: #fff !important;
-}
-
-/* Additional styling for better visibility */
-.form-section select option {
-  color: #333 !important;
-  background-color: #fff !important;
-  padding: 8px 12px;
-}
-
-/* Bootstrap Vue specific dropdown styling */
-.b-form-tags select option {
-  color: #333 !important;
-  background-color: #fff !important;
-  padding: 8px 12px;
-}
-
-/* Target the specific select element */
-#tags-component-select___input__ option {
-  color: #333 !important;
-  background-color: #fff !important;
-  padding: 8px 12px;
-}
-
-/* Global option styling for all selects */
-option {
-  color: #333 !important;
-  background-color: #fff !important;
-  padding: 8px 12px;
-}
-
-/* Ensure dropdown list is visible */
-select option:checked,
-select option:hover,
-select option:focus {
-  color: #333 !important;
-  background-color: #f8f9fa !important;
-}
-
-/* Fix selected option visibility in select */
-.form-control:focus,
-.form-control:active,
-.form-control {
-  color: #333 !important;
-}
-
-/* Make sure selected text is visible */
-select.form-control {
-  color: #333 !important;
-}
-
-/* Override white text for selected values */
-.form-section select {
-  color: #333 !important;
-}
-
-/* Form elements styling */
-.modern-textarea {
-  background-color: rgba(255, 255, 255, 0.05) !important;
-  border: 2px solid rgba(255, 255, 255, 0.1) !important;
-  border-radius: 8px !important;
-  color: #fff !important;
-  transition: all 0.3s ease;
-}
-
-.modern-textarea:focus {
-  background-color: rgba(255, 255, 255, 0.08) !important;
-  border-color: #5e72e4 !important;
-  box-shadow: 0 0 0 0.2rem rgba(94, 114, 228, 0.25) !important;
-}
-
-.modern-textarea::placeholder {
-  color: rgba(255, 255, 255, 0.6) !important;
-}
-
-.modern-select {
-  background-color: rgba(255, 255, 255, 0.05) !important;
-  border: 2px solid rgba(255, 255, 255, 0.1) !important;
-  border-radius: 8px !important;
-  color: #fff !important;
-  transition: all 0.3s ease;
-}
-
-.modern-select:focus {
-  background-color: rgba(255, 255, 255, 0.08) !important;
-  border-color: #5e72e4 !important;
-  box-shadow: 0 0 0 0.2rem rgba(94, 114, 228, 0.25) !important;
-}
-
-/* Tags styling */
-.modern-tags {
-  background-color: rgba(255, 255, 255, 0.05) !important;
-  border: 2px solid rgba(255, 255, 255, 0.1) !important;
-  border-radius: 8px !important;
-  padding: 12px !important;
-  transition: all 0.3s ease;
-}
-
-.modern-tags.is-invalid {
-  border-color: #f5365c !important;
-  background-color: rgba(245, 54, 92, 0.1) !important;
+  border-bottom: 1px solid #e8eaed;
 }
 
 .tags-error {
-  border-color: rgba(245, 54, 92, 0.3) !important;
+  border-color: #d93025;
 }
 
 .tags-error .section-title {
-  color: #f5365c !important;
+  color: #d93025;
 }
 
 .tags-display {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
 }
 
 .tag-badge {
-  padding: 8px 12px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  border-radius: 12px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-  transition: all 0.2s ease;
-  background-color: #5e72e4 !important;
-  border-color: #5e72e4 !important;
-}
-
-.tag-badge:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.tag-icon {
+  padding: 4px 10px;
   font-size: 0.8rem;
+  font-weight: 500;
+  border-radius: 4px;
+  background-color: #1a73e8 !important;
+  border-color: #1a73e8 !important;
 }
 
-/* Form actions */
 .form-actions {
-  border-top: 2px solid rgba(255, 255, 255, 0.1);
-  margin-top: 20px;
+  border-top: 1px solid #dadce0;
+  margin-top: 16px;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
-  .form-section {
-    padding: 16px;
-  }
-  
-  .submit-btn,
-  .cancel-btn {
-    width: 100%;
-    margin-bottom: 10px;
-  }
-  
-  .submit-btn {
-    margin-right: 0 !important;
-  }
+  .form-section { padding: 16px; }
 }
 </style>

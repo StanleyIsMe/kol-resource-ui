@@ -26,7 +26,7 @@
           <!-- Step 1: Basic Information -->
           <div class="step-section" v-show="currentStep === 1">
             <h5 class="step-title mb-4">
-              <i class="ni ni-email-83 mr-2"></i>步驟 1: 基本資訊
+              <i class="ni ni-email-83 mr-2"></i>Step 1: Basic Information
             </h5>
             
             <b-form-group id="input-group-subject" label="Subject" label-for="input-subject">
@@ -35,7 +35,7 @@
                 name="subject"
                 type="text"
                 v-model="form.subject"
-                placeholder="請輸入郵件主旨"
+                placeholder="Enter email subject"
                 required
                 :rules="{ required: true, max: 100 }"
                 @input="validateStep1"
@@ -57,7 +57,7 @@
             
             <div class="text-right mt-3">
               <b-button variant="primary" @click="nextStep" :disabled="!canProceedToStep2">
-                下一步 <i class="ni ni-bold-right"></i>
+                Next <i class="ni ni-bold-right"></i>
               </b-button>
             </div>
           </div>
@@ -65,7 +65,7 @@
           <!-- Step 2: Product and Sender Selection -->
           <div class="step-section" v-show="currentStep === 2">
             <h5 class="step-title mb-4">
-              <i class="ni ni-box-2 mr-2"></i>步驟 2: 產品與寄信者選擇
+              <i class="ni ni-box-2 mr-2"></i>Step 2: Product &amp; Sender
             </h5>
             
             <b-row>
@@ -78,7 +78,7 @@
                     @change="validateStep2"
                   >
                     <template #first>
-                      <option disabled value="">請選擇產品</option>
+                      <option disabled value="">Select a product</option>
                     </template>
                   </b-form-select>
                 </b-form-group>
@@ -92,7 +92,7 @@
                     @change="validateStep2"
                   >
                     <template #first>
-                      <option disabled value="">請選擇寄信者</option>
+                      <option disabled value="">Select a sender</option>
                     </template>
                   </b-form-select>
                 </b-form-group>
@@ -101,10 +101,10 @@
             
             <div class="d-flex justify-content-between mt-3">
               <b-button variant="secondary" @click="prevStep">
-                <i class="ni ni-bold-left"></i> 上一步
+                <i class="ni ni-bold-left"></i> Back
               </b-button>
               <b-button variant="primary" @click="nextStep" :disabled="!canProceedToStep3">
-                下一步 <i class="ni ni-bold-right"></i>
+                Next <i class="ni ni-bold-right"></i>
               </b-button>
             </div>
           </div>
@@ -112,16 +112,16 @@
           <!-- Step 3: KOL Selection -->
           <div class="step-section" v-show="currentStep === 3">
             <h5 class="step-title mb-4">
-              <i class="ni ni-single-02 mr-2"></i>步驟 3: KOL 搜尋與選擇
+              <i class="ni ni-single-02 mr-2"></i>Step 3: Search &amp; Select KOLs
             </h5>
             
             <!-- KOL Search Section -->
             <div class="kol-search-container">
               <div class="search-header mb-4">
                 <h6 class="search-title">
-                  <i class="ni ni-zoom-split mr-2"></i>搜尋條件
+                  <i class="ni ni-zoom-split mr-2"></i>Search Criteria
                 </h6>
-                <p class="search-subtitle text-muted">請設定搜尋條件來找到合適的KOL</p>
+                <p class="search-subtitle text-muted">Set search criteria to find KOLs</p>
               </div>
               
               <b-form @submit.prevent="listKols" class="search-form">
@@ -130,22 +130,22 @@
                   <div class="search-row">
                     <div class="search-field">
                       <label class="field-label">
-                        <i class="ni ni-single-02 mr-1"></i>KOL名稱
+                        <i class="ni ni-single-02 mr-1"></i>KOL Name
                       </label>
                       <b-form-input
                         type="text"
-                        placeholder="請輸入KOL名稱"
+                        placeholder="Enter KOL name"
                         v-model="searchKols.name"
                         class="modern-input"
                       ></b-form-input>
                     </div>
                     <div class="search-field">
                       <label class="field-label">
-                        <i class="ni ni-email-83 mr-1"></i>Email地址
+                        <i class="ni ni-email-83 mr-1"></i>Email Address
                       </label>
                       <b-form-input
                         type="email"
-                        placeholder="請輸入Email地址"
+                        placeholder="Enter email address"
                         v-model="searchKols.email"
                         class="modern-input"
                       ></b-form-input>
@@ -156,7 +156,7 @@
                   <div class="search-row">
                     <div class="search-field tags-field">
                       <label class="field-label">
-                        <i class="ni ni-tag mr-1"></i>標籤分類
+                        <i class="ni ni-tag mr-1"></i>Tags
                       </label>
                       <b-form-tags
                         id="tags-component-select"
@@ -165,7 +165,7 @@
                         class="modern-tags"
                         add-on-change
                         no-outer-focus
-                        placeholder="選擇標籤..."
+                        placeholder="Select tags..."
                       >
                         <template
                           v-slot="{
@@ -197,7 +197,7 @@
                             class="modern-select"
                           >
                             <template #first>
-                              <option disabled value="">選擇標籤...</option>
+                              <option disabled value="">Select tags...</option>
                             </template>
                           </b-form-select>
                         </template>
@@ -205,15 +205,15 @@
                     </div>
                     <div class="search-field">
                       <label class="field-label">
-                        <i class="ni ni-user-run mr-1"></i>性別
+                        <i class="ni ni-user-run mr-1"></i>Gender
                       </label>
                       <b-form-select
                         v-model="searchKols.sex"
                         class="modern-select"
                       >
-                        <option value="">全部</option>
-                        <option value="m">男性</option>
-                        <option value="f">女性</option>
+                        <option value="">All</option>
+                        <option value="m">Male</option>
+                        <option value="f">Female</option>
                       </b-form-select>
                     </div>
                   </div>
@@ -229,7 +229,7 @@
                     >
                       <b-spinner v-if="isSearchingKols" small class="mr-2"></b-spinner>
                       <i v-else class="ni ni-zoom-split mr-2"></i>
-                      {{ isSearchingKols ? '搜尋中...' : '搜尋KOL' }}
+                      {{ isSearchingKols ? 'Searching...' : 'Search KOL' }}
                     </b-button>
                     <b-button 
                       type="button" 
@@ -239,7 +239,7 @@
                       class="clear-btn"
                       :disabled="isSearchingKols"
                     >
-                      <i class="ni ni-fat-remove mr-2"></i>清除條件
+                      <i class="ni ni-fat-remove mr-2"></i>Clear
                     </b-button>
                   </div>
                 </div>
@@ -250,10 +250,10 @@
             <div class="selected-kols-container">
               <div class="selected-header mb-4">
                 <h6 class="selected-title">
-                  <i class="ni ni-check-bold mr-2"></i>已選擇的KOL
+                  <i class="ni ni-check-bold mr-2"></i>Selected KOLs
                   <b-badge variant="primary" class="ml-2">{{ form.kols.length }}</b-badge>
                 </h6>
-                <p class="selected-subtitle text-muted">已選擇 {{ form.kols.length }} 位KOL作為收件者</p>
+                <p class="selected-subtitle text-muted">{{ form.kols.length }} KOLs selected as recipients</p>
               </div>
               
               <!-- KOL Selection Actions -->
@@ -265,7 +265,7 @@
                   :disabled="kolOptions.length === 0"
                   class="action-btn"
                 >
-                  <i class="ni ni-check-bold mr-1"></i>全選搜尋結果
+                  <i class="ni ni-check-bold mr-1"></i>Select All Results
                 </b-button>
                 <b-button
                   variant="danger"
@@ -274,7 +274,7 @@
                   :disabled="form.kols.length === 0"
                   class="action-btn"
                 >
-                  <i class="ni ni-fat-remove mr-1"></i>清除所有選擇
+                  <i class="ni ni-fat-remove mr-1"></i>Clear All
                 </b-button>
               </div>
               
@@ -282,8 +282,8 @@
               <div class="selected-kols-display">
                 <div v-if="form.kols.length === 0" class="empty-state">
                   <i class="ni ni-single-02 empty-icon"></i>
-                  <p class="empty-text">尚未選擇任何KOL</p>
-                  <p class="empty-subtext">請先搜尋並選擇要發送郵件的KOL</p>
+                  <p class="empty-text">No KOLs selected</p>
+                  <p class="empty-subtext">Search and select KOLs to send emails to</p>
                 </div>
                 
                 <div v-else class="kol-list">
@@ -316,7 +316,7 @@
               <!-- Add More KOLs -->
               <div class="add-kols-section">
                 <h6 class="add-title mb-3">
-                  <i class="ni ni-fat-add mr-2"></i>新增更多KOL
+                  <i class="ni ni-fat-add mr-2"></i>Add More KOLs
                 </h6>
                 <b-form-tags
                   id="kol"
@@ -344,7 +344,7 @@
                       class="modern-select"
                     >
                       <template #first>
-                        <option disabled value="">選擇KOL加入收件者...</option>
+                        <option disabled value="">Select a KOL...</option>
                       </template>
                     </b-form-select>
                   </template>
@@ -354,10 +354,10 @@
             
             <div class="d-flex justify-content-between mt-3">
               <b-button variant="secondary" @click="prevStep">
-                <i class="ni ni-bold-left"></i> 上一步
+                <i class="ni ni-bold-left"></i> Back
               </b-button>
               <b-button variant="primary" @click="nextStep" :disabled="!canProceedToStep4">
-                下一步 <i class="ni ni-bold-right"></i>
+                Next <i class="ni ni-bold-right"></i>
               </b-button>
             </div>
           </div>
@@ -365,23 +365,23 @@
           <!-- Step 4: Submit -->
           <div class="step-section" v-show="currentStep === 4">
             <h5 class="step-title mb-4">
-              <i class="ni ni-send mr-2"></i>步驟 4: 確認發送
+              <i class="ni ni-send mr-2"></i>Step 4: Confirm &amp; Send
             </h5>
             
             <!-- Email Information Preview -->
             <div class="preview-content">
               <div class="preview-section mb-3">
                 <h6 class="text-primary mb-2">
-                  <i class="ni ni-email-83 mr-1"></i>郵件資訊
+                  <i class="ni ni-email-83 mr-1"></i>Email Information
                 </h6>
-                <p><strong>主旨:</strong> {{ form.subject }}</p>
-                <p><strong>寄信者:</strong> {{ getSenderName(form.sender) }} ({{ getSenderEmail(form.sender) }})</p>
-                <p><strong>產品:</strong> {{ getProductName(form.product) }}</p>
+                <p><strong>Subject:</strong> {{ form.subject }}</p>
+                <p><strong>Sender:</strong> {{ getSenderName(form.sender) }} ({{ getSenderEmail(form.sender) }})</p>
+                <p><strong>Product:</strong> {{ getProductName(form.product) }}</p>
               </div>
               
               <div class="preview-section mb-4">
                 <h6 class="text-primary mb-2">
-                  <i class="ni ni-single-02 mr-1"></i>收件者清單 ({{ form.kols.length }}位)
+                  <i class="ni ni-single-02 mr-1"></i>Recipient List ({{ form.kols.length }})
                 </h6>
                 <div class="recipients-list">
                   <div 
@@ -398,7 +398,7 @@
             
             <div class="d-flex justify-content-between">
               <b-button variant="secondary" @click="prevStep">
-                <i class="ni ni-bold-left"></i> 上一步
+                <i class="ni ni-bold-left"></i> Back
               </b-button>
               <div>
                 <b-button type="submit" variant="primary" size="lg" class="mr-3">
@@ -430,7 +430,7 @@
             <div class="error-icon">
               <i class="ni ni-notification-70"></i>
             </div>
-            <h5 class="error-title">發送失敗</h5>
+            <h5 class="error-title">Send Failed</h5>
           </div>
         </template>
         
@@ -446,7 +446,7 @@
               class="error-confirm-btn"
             >
               <i class="ni ni-check-bold mr-2"></i>
-              我知道了
+              OK
             </b-button>
           </div>
         </div>
@@ -460,17 +460,15 @@ export default {
   name: "EditEmailForm",
   data() {
     return {
-      // Progress tracking
       currentStep: 1,
       steps: [
-        { label: "基本資訊", icon: "ni ni-email-83" },
-        { label: "產品寄信者", icon: "ni ni-box-2" },
-        { label: "KOL選擇", icon: "ni ni-single-02" },
-        { label: "確認發送", icon: "ni ni-send" }
+        { label: "Basic Info", icon: "ni ni-email-83" },
+        { label: "Product & Sender", icon: "ni ni-box-2" },
+        { label: "KOL Selection", icon: "ni ni-single-02" },
+        { label: "Confirm", icon: "ni ni-send" }
       ],
       
-      // Editor
-      editorData: "<p>Content of the editor.</p>",
+      editorData: "",
       editorConfig: {
         toolbar: [
           { name: 'document', items: ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates'] },
@@ -504,7 +502,6 @@ export default {
         ]
       },
       
-      // Form data
       form: {
         subject: "",
         emailBody: "",
@@ -513,7 +510,6 @@ export default {
         sender: "",
       },
       
-      // Search and options
       searchKols: {
         name: "",
         tag: "",
@@ -524,14 +520,12 @@ export default {
         page_size: 1000,
       },
       
-      // Options
       options: [],
       value: [],
       tagMap: new Map(),
       kolMap: new Map(),
       senderMap: new Map(),
       
-      // UI state
       show: true,
       kolOptions: [],
       productOptions: [],
@@ -540,7 +534,6 @@ export default {
       tagValue: [],
       kolTags: [],
       
-      // Loading states
       isSearchingKols: false,
       errorMessage: '',
     };
@@ -550,7 +543,6 @@ export default {
     this.listProducts();
     this.listTags();
     this.listSenders();
-    // Removed this.listKols() - only load KOLs when user searches
   },
   computed: {
     progressPercentage() {
@@ -577,7 +569,6 @@ export default {
     },
   },
   methods: {
-    // Step navigation methods
     nextStep() {
       if (this.currentStep < this.steps.length) {
         this.currentStep++;
@@ -589,26 +580,16 @@ export default {
       }
     },
     
-    // CKEditor ready handler
     onEditorReady() {
-      // Set up CKEditor change event
       this.editorDom.on('change', () => {
         this.editorData = this.editorDom.getData();
       });
     },
     
-    // Step validation methods
-    validateStep1() {
-      // This will be called automatically by computed properties
-    },
-    validateStep2() {
-      // This will be called automatically by computed properties
-    },
-    validateStep3() {
-      // This will be called automatically by computed properties
-    },
+    validateStep1() {},
+    validateStep2() {},
+    validateStep3() {},
     
-    // KOL management methods
     clearSearch() {
       this.searchKols = {
         name: "",
@@ -627,7 +608,6 @@ export default {
       }
     },
     
-    // Display methods
     getCustomKolDisplay(tag) {
       return this.kolMap.get(tag);
     },
@@ -655,10 +635,9 @@ export default {
     onSubmit(event) {
       event.preventDefault();
       
-      // Comprehensive validation
       if (!this.form.subject.trim()) {
-        this.$bvToast.toast("主旨不得為空", {
-          title: "驗證失敗",
+        this.$bvToast.toast("Subject is required", {
+          title: "Validation Error",
           variant: "danger",
           solid: true,
           autoHideDelay: 3000,
@@ -668,8 +647,8 @@ export default {
       }
 
       if (!this.editorDom.getData().trim()) {
-        this.$bvToast.toast("信件內容不得為空", {
-          title: "驗證失敗",
+        this.$bvToast.toast("Email content is required", {
+          title: "Validation Error",
           variant: "danger",
           solid: true,
           autoHideDelay: 3000,
@@ -679,8 +658,8 @@ export default {
       }
 
       if (!this.form.product) {
-        this.$bvToast.toast("請選擇產品", {
-          title: "驗證失敗",
+        this.$bvToast.toast("Please select a product", {
+          title: "Validation Error",
           variant: "danger",
           solid: true,
           autoHideDelay: 3000,
@@ -690,8 +669,8 @@ export default {
       }
 
       if (!this.form.sender) {
-        this.$bvToast.toast("請選擇寄信者", {
-          title: "驗證失敗",
+        this.$bvToast.toast("Please select a sender", {
+          title: "Validation Error",
           variant: "danger",
           solid: true,
           autoHideDelay: 3000,
@@ -701,8 +680,8 @@ export default {
       }
 
       if (this.form.kols.length === 0) {
-        this.$bvToast.toast("請選擇至少一個KOL", {
-          title: "驗證失敗",
+        this.$bvToast.toast("Please select at least one KOL", {
+          title: "Validation Error",
           variant: "danger",
           solid: true,
           autoHideDelay: 3000,
@@ -711,12 +690,10 @@ export default {
         return;
       }
 
-      // Call API directly
       this.confirmSend();
     },
     
     confirmSend() {
-      // Process the content to extract images and convert to CID format
       const originalContent = this.editorDom.getData();
       const { processedContent, images } = this.processImagesForEmail(originalContent);
 
@@ -740,7 +717,6 @@ export default {
         images: images,
       };
 
-      // Show sending status
       this.$bvToast.toast("Sending emails, please wait...", {
         title: "Sending",
         variant: "info",
@@ -757,9 +733,9 @@ export default {
             const subject = this.form.subject;
             
             this.$bvToast.toast(
-              `郵件「${subject}」已成功加入發送佇列，將發送給 ${kolCount} 位KOL`,
+              `Email "${subject}" queued for ${kolCount} KOLs`,
               {
-                title: "發送成功",
+                title: "Success",
                 variant: "success",
                 solid: true,
                 autoHideDelay: 6000,
@@ -767,20 +743,16 @@ export default {
                 appendToast: false
               }
             );
-            // Reset form after successful send
             this.onReset();
           }
         })
         .catch((error) => {
-          console.error("Send email error:", error);
-          
           if (error.response && error.response.status === 401) {
             this.$router.push({ name: "login" });
             return;
           }
 
-          // Extract error message from different possible locations
-          let errorMessage = "發送郵件失敗，請稍後再試";
+          let errorMessage = "Failed to send email. Please try again.";
           
           if (error.response) {
             if (error.response.data) {
@@ -800,16 +772,14 @@ export default {
             errorMessage = error.message;
           }
           
-          // Show error toast
           this.$bvToast.toast(errorMessage, {
-            title: "發送失敗",
+            title: "Send Failed",
             variant: "danger",
             solid: true,
             autoHideDelay: 8000,
             toaster: 'b-toaster-top-right'
           });
           
-          // Show custom error modal instead of alert
           this.showErrorModal(errorMessage);
         });
     },
@@ -822,22 +792,18 @@ export default {
     onReset(event) {
       if (event) event.preventDefault();
       
-      // Reset form values
       this.form.subject = "";
       this.form.emailBody = "";
       this.form.kols = [];
       this.form.product = "";
       this.form.sender = "";
       
-      // Reset editor
       if (this.editorDom) {
-        this.editorDom.setData("<p>Content of the editor.</p>");
+        this.editorDom.setData("");
       }
       
-      // Reset progress
       this.currentStep = 1;
       
-      // Reset search
       this.searchKols = {
         name: "",
         tag: "",
@@ -848,18 +814,15 @@ export default {
         page_size: 1000,
       };
       
-      // Reset KOL options
       this.kolOptions = [];
       this.kolMap.clear();
       
-      // Trick to reset/clear native browser form validation state
       this.show = false;
       this.$nextTick(() => {
         this.show = true;
       });
     },
     
-    // API methods
     listSenders() {
       const url = process.env.VUE_APP_KOL_API_URL + "/api/v1/email_senders";
 
@@ -884,11 +847,8 @@ export default {
               this.senderMap.set(sender.id, sender);
             });
           }
-          console.log("Email senders loaded:", response.data);
         })
         .catch((error) => {
-          console.error("Error loading email senders:", error);
-
           if (error.response && error.response.status === 401) {
             this.$router.push({ name: "login" });
             return;
@@ -925,18 +885,20 @@ export default {
               });
             });
           }
-          console.log("Response:", response.data);
-          // Handle successful response here
         })
         .catch((error) => {
           if (error.status == 401) {
             this.$router.push({ name: "login" });
-
             return;
           }
 
-          console.error("Error:", error);
-          alert("Error:" + error.response.data);
+          this.$bvToast.toast("Failed to load products", {
+            title: "Error",
+            variant: "danger",
+            solid: true,
+            autoHideDelay: 3000,
+            toaster: "b-toaster-top-right",
+          });
         });
     },
     listTags() {
@@ -956,34 +918,30 @@ export default {
             this.tagOptions = [];
             response.data.forEach((tag) => {
               this.tagMap.set(tag.id, tag.name);
-              // this.options.push({
-              //   text: tag.name,
-              //   value: tag.id,
-              // });
               this.tagOptions.push({ text: tag.name, value: tag.id });
             });
           }
-          console.log("Response:", response.data);
-          // Handle successful response here
         })
         .catch((error) => {
           if (error.status == 401) {
             this.$router.push({ name: "login" });
-
             return;
           }
 
-          console.error("Error:", error);
-          alert("Error:" + error.response.data);
+          this.$bvToast.toast("Failed to load tags", {
+            title: "Error",
+            variant: "danger",
+            solid: true,
+            autoHideDelay: 3000,
+            toaster: "b-toaster-top-right",
+          });
         });
     },
     async listKols() {
-      // Set loading state
       this.isSearchingKols = true;
       
-      // Show loading toast
-      this.$bvToast.toast("正在搜尋KOL，請稍候...", {
-        title: "搜尋中",
+      this.$bvToast.toast("Searching for KOLs...", {
+        title: "Searching",
         variant: "info",
         solid: true,
         autoHideDelay: 2000,
@@ -991,7 +949,6 @@ export default {
       });
       
       try {
-        // Store previously selected KOLs to preserve them
         const previouslySelectedKols = new Map();
         this.form.kols.forEach(kolId => {
           if (this.kolMap.has(kolId)) {
@@ -999,22 +956,18 @@ export default {
           }
         });
         
-        // Clear current options but preserve selected KOLs
         this.kolMap.clear();
         this.kolOptions = [];
         
-        // Add previously selected KOLs back to the map
         previouslySelectedKols.forEach((displayName, kolId) => {
           this.kolMap.set(kolId, displayName);
         });
         
-        // Pagination variables
         let pageIndex = 1;
         const pageSize = 1000;
         let allKols = [];
         let hasMorePages = true;
         
-        // Fetch all pages
         while (hasMorePages) {
           const url = process.env.VUE_APP_KOL_API_URL + "/api/v1/kols";
           
@@ -1051,24 +1004,13 @@ export default {
             const kols = response.data.kols || [];
             allKols = allKols.concat(kols);
             
-            // Check if there are more pages
             hasMorePages = kols.length === pageSize;
             pageIndex++;
-            
-            // Update loading message for pagination
-            this.$bvToast.toast(`已載入 ${allKols.length} 位KOL，繼續搜尋中...`, {
-              title: "搜尋中",
-              variant: "info",
-              solid: true,
-              autoHideDelay: 1000,
-              toaster: 'b-toaster-top-right'
-            });
           } else {
             hasMorePages = false;
           }
         }
         
-        // Add all found KOLs to options
         allKols.forEach((kol) => {
           const displayName = `${kol.name} - ${kol.email}`;
           this.kolOptions.push({
@@ -1078,9 +1020,8 @@ export default {
           this.kolMap.set(kol.id, displayName);
         });
         
-        // Show success message
-        this.$bvToast.toast(`搜尋完成！找到 ${allKols.length} 位KOL`, {
-          title: "搜尋完成",
+        this.$bvToast.toast(`Search complete! Found ${allKols.length} KOLs`, {
+          title: "Search Complete",
           variant: "success",
           solid: true,
           autoHideDelay: 3000,
@@ -1088,11 +1029,7 @@ export default {
           noCloseButton: false
         });
         
-        console.log("Total KOLs found:", allKols.length);
-        
       } catch (error) {
-        console.error("Error:", error);
-        
         if (error.response && error.response.status === 401) {
           this.$router.push({ name: "login" });
           return;
@@ -1100,42 +1037,36 @@ export default {
 
         const errorMessage = (error.response && error.response.data && error.response.data.message) || 
                             (error.response && error.response.data) || 
-                            "搜尋KOL失敗，請稍後再試";
+                            "Failed to search KOLs";
         this.$bvToast.toast(errorMessage, {
-          title: "搜尋失敗",
+          title: "Search Failed",
           variant: "danger",
           solid: true,
           autoHideDelay: 5000,
           toaster: 'b-toaster-top-right'
         });
       } finally {
-        // Always clear loading state
         this.isSearchingKols = false;
       }
     },
-    // New method to process images from CKEditor content
     processImagesForEmail(htmlContent) {
       const parser = new DOMParser();
       const doc = parser.parseFromString(htmlContent, "text/html");
       const images = [];
       let imageCounter = 1;
 
-      // Find all img elements
       const imgElements = doc.querySelectorAll("img");
 
       imgElements.forEach((img) => {
         const src = img.getAttribute("src");
 
-        // Process only data URLs (base64 encoded images)
         if (src && src.startsWith("data:image/")) {
           const imageType = src.split(";")[0].split("/")[1];
           const base64Data = src.split(",")[1];
           const contentId = `image${imageCounter}`;
 
-          // Replace src with cid reference
           img.setAttribute("src", `cid:${contentId}`);
 
-          // Store image data for backend processing
           images.push({
             content_id: contentId,
             type: imageType,
@@ -1146,24 +1077,19 @@ export default {
         }
       });
 
-      // Serialize the modified DOM back to HTML
       const processedContent = doc.body.innerHTML;
 
       return { processedContent, images };
     },
     selectAllFilteredKols() {
-      // If there are no options or all options are already selected, do nothing
       if (this.kolOptions.length === 0 || this.availableOptions.length === 0) {
         return;
       }
 
-      // Get all currently available KOL ids
       const kolIdsToAdd = this.availableOptions.map((option) => option.value);
 
-      // Add them to the currently selected kols (without duplicates)
       this.form.kols = [...new Set([...this.form.kols, ...kolIdsToAdd])];
 
-      // Show confirmation message
       this.$bvToast.toast(`Added ${kolIdsToAdd.length} KOLs to recipients`, {
         title: "KOLs Selected",
         variant: "success",
@@ -1173,18 +1099,14 @@ export default {
       });
     },
     removeAllKols() {
-      // If there are no selected KOLs, do nothing
       if (this.form.kols.length === 0) {
         return;
       }
 
-      // Store the count for the confirmation message
       const removedCount = this.form.kols.length;
 
-      // Clear all selected KOLs
       this.form.kols = [];
 
-      // Show confirmation message
       this.$bvToast.toast(`Removed ${removedCount} KOLs from recipients`, {
         title: "KOLs Removed",
         variant: "warning",
@@ -1200,18 +1122,15 @@ export default {
       return product ? product.text : "Unknown Product";
     },
     handleRemoveKol(tag, removeTagFunction) {
-      // Store the current scroll position
       const scrollPosition =
         window.pageYOffset || document.documentElement.scrollTop;
 
-      // Call the original removeTag function from the component
       removeTagFunction(tag);
 
-      // Use setTimeout to ensure the DOM has updated before setting scroll position
       setTimeout(() => {
         window.scrollTo({
           top: scrollPosition,
-          behavior: "auto", // Use 'auto' instead of 'smooth' to prevent visible scrolling
+          behavior: "auto",
         });
       }, 0);
     },
@@ -1219,27 +1138,22 @@ export default {
 };
 </script>
 
-<style>
-/* Global Background */
-body {
-  background: linear-gradient(135deg, #e8eaed 0%, #dadce0 100%);
-  min-height: 100vh;
-}
+<style lang="scss" scoped>
+$gcp-blue: #1a73e8;
+$gcp-green: #1e8e3e;
+$gcp-text: #202124;
+$gcp-secondary: #5f6368;
+$gcp-border: #dadce0;
+$gcp-surface: #ffffff;
+$gcp-bg: #fafafa;
 
-/* Main Container Background */
-.email-form-container {
-  background: transparent;
-  min-height: 100vh;
-  padding: 10px;
-}
-/* Progress Bar Styles */
 .progress-container {
-  background: linear-gradient(135deg, #e8eaed 0%, #dadce0 100%);
+  background: $gcp-surface;
   border-radius: 15px;
   padding: 15px;
   margin-bottom: 15px;
-  border: 1px solid rgba(94, 114, 228, 0.1);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border: 1px solid $gcp-border;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 .progress-steps {
@@ -1256,87 +1170,73 @@ body {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: #e9ecef;
+  background: #e8eaed;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 10px;
   transition: all 0.3s ease;
-  border: 3px solid #e9ecef;
+  border: 3px solid #e8eaed;
 }
 
 .step-item.active .step-circle {
-  background: #5e72e4;
-  border-color: #5e72e4;
+  background: $gcp-blue;
+  border-color: $gcp-blue;
   color: white;
 }
 
 .step-item.completed .step-circle {
-  background: #2dce89;
-  border-color: #2dce89;
+  background: $gcp-green;
+  border-color: $gcp-green;
   color: white;
 }
 
 .step-label {
   font-size: 12px;
   font-weight: 600;
-  color: #6c757d;
+  color: $gcp-secondary;
   text-align: center;
 }
 
 .step-item.active .step-label,
 .step-item.completed .step-label {
-  color: #5e72e4;
+  color: $gcp-blue;
 }
 
 .progress-bar-container {
   height: 4px;
-  background: #e9ecef;
+  background: #e8eaed;
   border-radius: 2px;
   overflow: hidden;
 }
 
 .progress-bar {
   height: 100%;
-  background: linear-gradient(90deg, #5e72e4, #2dce89);
+  background: $gcp-blue;
   transition: width 0.3s ease;
   border-radius: 2px;
 }
 
-/* Step Section Styles */
 .step-section {
-  background: linear-gradient(135deg, #f1f3f4 0%, #e8eaed 100%);
+  background: $gcp-surface;
   border-radius: 12px;
   padding: 20px;
   margin-bottom: 15px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  border: 1px solid rgba(94, 114, 228, 0.1);
-  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: 1px solid $gcp-border;
+  transition: box-shadow 0.3s ease;
   position: relative;
   overflow: hidden;
 }
 
-.step-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #5e72e4, #2dce89);
-  border-radius: 12px 12px 0 0;
-}
-
 .step-section:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.12);
-  border-color: rgba(94, 114, 228, 0.2);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12);
 }
 
 .step-title {
-  color: #5e72e4;
+  color: $gcp-blue;
   font-weight: 600;
-  border-bottom: 2px solid rgba(94, 114, 228, 0.2);
+  border-bottom: 2px solid $gcp-border;
   padding-bottom: 15px;
   margin-bottom: 25px;
   position: relative;
@@ -1349,80 +1249,19 @@ body {
   left: 0;
   width: 50px;
   height: 2px;
-  background: linear-gradient(90deg, #5e72e4, #2dce89);
+  background: $gcp-blue;
   border-radius: 1px;
-}
-
-/* Form Input Styling */
-.form-control, .custom-select, .modern-input, .modern-select {
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-  border: 1px solid rgba(94, 114, 228, 0.2);
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
-
-.form-control:focus, .custom-select:focus, .modern-input:focus, .modern-select:focus {
-  background: linear-gradient(135deg, #ffffff 0%, #f1f3f4 100%);
-  border-color: #5e72e4;
-  box-shadow: 0 0 0 0.2rem rgba(94, 114, 228, 0.25);
-}
-
-/* Button Styling */
-.btn-primary {
-  background: linear-gradient(135deg, #5e72e4 0%, #4c63d2 100%);
-  border: none;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
-
-.btn-primary:hover {
-  background: linear-gradient(135deg, #4c63d2 0%, #3b4db8 100%);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(94, 114, 228, 0.3);
-}
-
-.btn-success {
-  background: linear-gradient(135deg, #2dce89 0%, #26a06a 100%);
-  border: none;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
-
-.btn-success:hover {
-  background: linear-gradient(135deg, #26a06a 0%, #1e7e56 100%);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(45, 206, 137, 0.3);
-}
-
-.btn-outline-secondary {
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-  border: 1px solid rgba(108, 117, 125, 0.3);
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
-
-.btn-outline-secondary:hover {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  border-color: rgba(108, 117, 125, 0.5);
-  transform: translateY(-1px);
 }
 
 .b-form-tags-form {
   transition: none !important;
 }
 
-/* Button Styles */
 .select-all-btn,
 .remove-all-btn {
   transition: all 0.2s ease;
   margin-bottom: 0.5rem;
   font-weight: 600;
-}
-
-.select-all-btn:hover,
-.remove-all-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
 }
 
 .remove-all-btn {
@@ -1435,17 +1274,16 @@ body {
   border-color: #f21e48;
 }
 
-/* Preview Modal Styles */
 .preview-content {
   padding: 10px 0;
 }
 
 .preview-section {
-  background: linear-gradient(135deg, #f1f3f4 0%, #e8eaed 100%);
+  background: $gcp-bg;
   padding: 20px;
   border-radius: 12px;
-  border-left: 4px solid #5e72e4;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  border-left: 4px solid $gcp-blue;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   margin-bottom: 15px;
 }
 
@@ -1456,32 +1294,20 @@ body {
 
 .recipient-item {
   padding: 8px 12px;
-  background: white;
+  background: $gcp-surface;
   border-radius: 6px;
-  border: 1px solid #e9ecef;
+  border: 1px solid $gcp-border;
 }
 
-/* KOL Search Container */
 .kol-search-container {
-  background: linear-gradient(135deg, #f1f3f4 0%, #e8eaed 100%);
+  background: $gcp-surface;
   border-radius: 15px;
   padding: 30px;
   margin-bottom: 25px;
-  border: 1px solid rgba(94, 114, 228, 0.15);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border: 1px solid $gcp-border;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   position: relative;
   overflow: hidden;
-}
-
-.kol-search-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #5e72e4, #2dce89);
-  border-radius: 15px 15px 0 0;
 }
 
 .search-header {
@@ -1490,7 +1316,7 @@ body {
 }
 
 .search-title {
-  color: #5e72e4;
+  color: $gcp-blue;
   font-weight: 600;
   margin-bottom: 5px;
 }
@@ -1519,25 +1345,25 @@ body {
 
 .field-label {
   font-weight: 600;
-  color: #495057;
+  color: $gcp-text;
   margin-bottom: 8px;
   font-size: 14px;
 }
 
 .modern-input,
 .modern-select {
-  border: 2px solid #e9ecef;
+  border: 1px solid $gcp-border;
   border-radius: 8px;
   padding: 12px 15px;
   font-size: 14px;
   transition: all 0.3s ease;
-  background: white;
+  background: $gcp-surface;
 }
 
 .modern-input:focus,
 .modern-select:focus {
-  border-color: #5e72e4;
-  box-shadow: 0 0 0 0.2rem rgba(94, 114, 228, 0.25);
+  border-color: $gcp-blue;
+  box-shadow: 0 0 0 0.2rem rgba(26, 115, 232, 0.25);
   outline: none;
 }
 
@@ -1546,9 +1372,9 @@ body {
 }
 
 .modern-tags {
-  border: 2px solid #e9ecef;
+  border: 1px solid $gcp-border;
   border-radius: 8px;
-  background: white;
+  background: $gcp-surface;
   padding: 8px;
 }
 
@@ -1582,56 +1408,40 @@ body {
 }
 
 .search-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(94, 114, 228, 0.3);
+  box-shadow: 0 1px 6px rgba(26, 115, 232, 0.3);
 }
 
 .search-btn:disabled {
   opacity: 0.7;
   cursor: not-allowed;
-  transform: none;
 }
 
 .search-btn:disabled:hover {
-  transform: none;
   box-shadow: none;
 }
 
 .clear-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+  box-shadow: 0 1px 6px rgba(95, 99, 104, 0.3);
 }
 
-/* Selected KOLs Container */
 .selected-kols-container {
-  background: linear-gradient(135deg, #e8eaed 0%, #f1f3f4 100%);
+  background: $gcp-surface;
   border-radius: 15px;
   padding: 30px;
-  border: 1px solid rgba(45, 206, 137, 0.15);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border: 1px solid $gcp-border;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   position: relative;
   overflow: hidden;
 }
 
-.selected-kols-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #2dce89, #5e72e4);
-  border-radius: 15px 15px 0 0;
-}
-
 .selected-header {
   text-align: center;
-  border-bottom: 2px solid #e9ecef;
+  border-bottom: 1px solid $gcp-border;
   padding-bottom: 15px;
 }
 
 .selected-title {
-  color: #2dce89;
+  color: $gcp-green;
   font-weight: 600;
   margin-bottom: 5px;
   display: flex;
@@ -1657,10 +1467,6 @@ body {
   transition: all 0.3s ease;
 }
 
-.action-btn:hover {
-  transform: translateY(-1px);
-}
-
 .selected-kols-display {
   margin-bottom: 25px;
 }
@@ -1668,12 +1474,12 @@ body {
 .empty-state {
   text-align: center;
   padding: 40px 20px;
-  color: #6c757d;
+  color: $gcp-secondary;
 }
 
 .empty-icon {
   font-size: 48px;
-  color: #dee2e6;
+  color: $gcp-border;
   margin-bottom: 15px;
 }
 
@@ -1681,6 +1487,7 @@ body {
   font-size: 18px;
   font-weight: 600;
   margin-bottom: 5px;
+  color: $gcp-text;
 }
 
 .empty-subtext {
@@ -1697,19 +1504,16 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(135deg, #f1f3f4 0%, #e8eaed 100%);
+  background: $gcp-bg;
   border-radius: 10px;
   padding: 18px;
-  border: 1px solid rgba(45, 206, 137, 0.2);
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  border: 1px solid $gcp-border;
+  transition: box-shadow 0.3s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .kol-item:hover {
-  background: linear-gradient(135deg, #dadce0 0%, #e8eaed 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  border-color: rgba(45, 206, 137, 0.3);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
 }
 
 .kol-info {
@@ -1721,7 +1525,7 @@ body {
 .kol-avatar {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #5e72e4, #2dce89);
+  background: $gcp-blue;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -1737,13 +1541,13 @@ body {
 
 .kol-name {
   font-weight: 600;
-  color: #495057;
+  color: $gcp-text;
   font-size: 14px;
 }
 
 .kol-email {
   font-size: 12px;
-  color: #6c757d;
+  color: $gcp-secondary;
   font-style: italic;
 }
 
@@ -1753,100 +1557,24 @@ body {
   transition: all 0.3s ease;
 }
 
-.remove-kol-btn:hover {
-  transform: scale(1.1);
-}
-
 .add-kols-section {
-  border-top: 2px solid #e9ecef;
+  border-top: 1px solid $gcp-border;
   padding-top: 20px;
 }
 
 .add-title {
-  color: #5e72e4;
+  color: $gcp-blue;
   font-weight: 600;
   text-align: center;
 }
 
 .modern-kol-tags {
-  border: 2px solid #e9ecef;
+  border: 1px solid $gcp-border;
   border-radius: 8px;
-  background: white;
+  background: $gcp-surface;
   padding: 8px;
 }
 
-/* CKEditor Styles */
-.ck-editor__editable {
-  min-height: 300px;
-  border-radius: 8px;
-  border: 2px solid #e9ecef;
-  transition: border-color 0.3s ease;
-}
-
-.ck-editor__editable:focus {
-  border-color: #5e72e4;
-  box-shadow: 0 0 0 0.2rem rgba(94, 114, 228, 0.25);
-}
-
-.ck-toolbar {
-  border-radius: 8px 8px 0 0;
-  border: 2px solid #e9ecef;
-  border-bottom: none;
-}
-
-.ck-editor__main {
-  border-radius: 0 0 8px 8px;
-}
-
-/* CKEditor Content Styles */
-.ck-editor__editable p {
-  margin: 1em 0;
-}
-
-.ck-editor__editable h1,
-.ck-editor__editable h2,
-.ck-editor__editable h3,
-.ck-editor__editable h4,
-.ck-editor__editable h5,
-.ck-editor__editable h6 {
-  margin: 1em 0 0.5em 0;
-  font-weight: bold;
-}
-
-.ck-editor__editable ul,
-.ck-editor__editable ol {
-  margin: 1em 0;
-  padding-left: 2em;
-}
-
-.ck-editor__editable blockquote {
-  margin: 1em 0;
-  padding: 0.5em 1em;
-  border-left: 4px solid #5e72e4;
-  background: linear-gradient(135deg, #f1f3f4 0%, #e8eaed 100%);
-  font-style: italic;
-  border-radius: 6px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-.ck-editor__editable table {
-  border-collapse: collapse;
-  width: 100%;
-  margin: 1em 0;
-}
-
-.ck-editor__editable table td,
-.ck-editor__editable table th {
-  border: 1px solid #dee2e6;
-  padding: 0.5em;
-}
-
-.ck-editor__editable table th {
-  background: linear-gradient(135deg, #e8eaed 0%, #dadce0 100%);
-  font-weight: bold;
-}
-
-/* Error Modal Styles */
 .error-modal-header {
   display: flex;
   align-items: center;
@@ -1858,17 +1586,17 @@ body {
 .error-icon {
   width: 50px;
   height: 50px;
-  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  background: #dc3545;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
-}
+  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
 
-.error-icon i {
-  color: white;
-  font-size: 24px;
+  i {
+    color: white;
+    font-size: 24px;
+  }
 }
 
 .error-title {
@@ -1884,19 +1612,18 @@ body {
 }
 
 .error-message {
-  background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+  background: #fce8e6;
   border: 1px solid rgba(220, 53, 69, 0.2);
   border-radius: 12px;
   padding: 25px;
   margin-bottom: 30px;
-  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.1);
-}
 
-.error-message p {
-  color: #721c24;
-  font-size: 1.1rem;
-  margin: 0;
-  line-height: 1.6;
+  p {
+    color: #721c24;
+    font-size: 1.1rem;
+    margin: 0;
+    line-height: 1.6;
+  }
 }
 
 .error-actions {
@@ -1905,87 +1632,33 @@ body {
 }
 
 .error-confirm-btn {
-  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  background: #dc3545;
   border: none;
   border-radius: 10px;
   padding: 12px 30px;
   font-weight: 600;
-  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
   transition: all 0.3s ease;
+
+  &:hover {
+    background: #c82333;
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+  }
 }
 
-.error-confirm-btn:hover {
-  background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
-}
-
-/* Modal Overlay Styling */
-.modal-content {
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-  border: none;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-}
-
-.modal-header {
-  border-bottom: none;
-  padding: 0;
-}
-
-.modal-body {
-  padding: 0;
-}
-
-/* Toast Styles */
-.toast {
-  min-width: 300px;
-  max-width: 400px;
-}
-
-.toast-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.5rem 0.75rem;
-  background-color: rgba(255, 255, 255, 0.85);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.toast-body {
-  padding: 0.75rem;
-  background-color: rgba(255, 255, 255, 0.95);
-  color: #212529;
-  font-size: 0.875rem;
-  line-height: 1.4;
-}
-
-.toast.show {
-  display: block !important;
-}
-
-/* Responsive Design */
 @media (max-width: 768px) {
   .search-row {
     grid-template-columns: 1fr;
   }
-  
+
   .search-actions {
     flex-direction: column;
     align-items: center;
   }
-  
+
   .kol-actions {
     flex-direction: column;
     align-items: center;
-  }
-  
-  .ck-toolbar {
-    flex-wrap: wrap;
-  }
-  
-  .ck-toolbar__separator {
-    display: none;
   }
 }
 </style>

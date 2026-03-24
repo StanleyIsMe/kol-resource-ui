@@ -197,132 +197,33 @@ export default {
   cursor: pointer;
 }
 
-/* Enhanced Sidebar Item Animations */
-.nav-item {
-  position: relative;
-  
-  .nav-link {
-    position: relative;
-    overflow: hidden;
-    
-    /* Icon animation */
-    i {
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      
-      &:hover {
-        transform: scale(1.1) rotate(5deg);
-      }
-    }
-    
-    /* Text animation */
-    .nav-link-text {
-      transition: all 0.3s ease;
-      position: relative;
-      z-index: 2;
-    }
-    
-    /* Ripple effect */
-    &::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      background: rgba(255,255,255,0.3);
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      transition: width 0.6s ease, height 0.6s ease;
-      z-index: 1;
-    }
-    
-    &:active::after {
-      width: 300px;
-      height: 300px;
-    }
-    
-    /* Glow effect for active items */
-    &.active {
-      &::before {
-        content: '';
-        position: absolute;
-        top: -2px;
-        left: -2px;
-        right: -2px;
-        bottom: -2px;
-        background: linear-gradient(45deg, #ff6b6b, #ee5a24, #ff6b6b);
-        border-radius: 14px;
-        z-index: -1;
-        animation: glow 2s ease-in-out infinite alternate;
-      }
-    }
-  }
-}
-
-/* Glow animation */
-@keyframes glow {
-  from {
-    box-shadow: 0 0 20px rgba(255,107,107,0.4);
-  }
-  to {
-    box-shadow: 0 0 30px rgba(255,107,107,0.8), 0 0 40px rgba(255,107,107,0.4);
-  }
-}
-
-/* Pulse animation for icons */
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-/* Add pulse to active icons */
-.nav-item .nav-link.active i {
-  animation: pulse 2s ease-in-out infinite;
-}
-
-/* Sub-menu styling */
 .nav-sm {
-  margin-left: 20px;
-  margin-top: 8px;
-  
-  .nav-item {
-    margin-bottom: 4px;
-    
-    .nav-link {
-      padding: 10px 15px;
-      font-size: 0.9rem;
-      background: rgba(255,255,255,0.05);
-      border-left: 3px solid transparent;
-      transition: all 0.3s ease;
-      
-      &:hover {
-        background: rgba(255,255,255,0.15);
-        border-left-color: rgba(255,255,255,0.5);
-        transform: translateX(5px);
-      }
-      
-      &.active {
-        background: rgba(255,255,255,0.2);
-        border-left-color: #ffc107;
-        color: #ffc107;
-      }
-      
-      i {
-        font-size: 1rem;
-        margin-right: 10px;
-      }
+  margin-left: 12px;
+  margin-top: 4px;
+
+  .nav-item .nav-link {
+    padding: 8px 16px 8px 24px;
+    font-size: 0.8125rem;
+    border-left: 3px solid transparent;
+
+    &:hover {
+      background-color: #f1f3f4;
+    }
+
+    &.active {
+      background-color: #e8f0fe;
+      border-left-color: #1a73e8;
+      color: #1a73e8;
+    }
+
+    i {
+      font-size: 0.875rem;
+      margin-right: 10px;
+      color: #5f6368;
     }
   }
 }
 
-/* Caret icon styling for menu items */
 .caret {
   display: inline-block;
   width: 0;
@@ -332,12 +233,12 @@ export default {
   border-top: 4px dashed;
   border-right: 4px solid transparent;
   border-left: 4px solid transparent;
-  transition: transform 0.3s ease;
+  transition: transform 0.2s ease;
   float: right;
   margin-top: 6px;
+  color: #5f6368;
 }
 
-/* Hide Bootstrap default caret from navbar-vertical.scss */
 .sidebar-menu-item.nav-link[data-toggle="collapse"]::after {
   display: none !important;
   content: none !important;
@@ -349,34 +250,5 @@ export default {
 
 .sidebar-menu-item[aria-expanded="true"] .caret {
   transform: rotate(0deg);
-}
-
-/* Special hover effects for different menu items */
-.nav-item:nth-child(1) .nav-link:hover { /* Dashboard */
-  background: linear-gradient(135deg, rgba(116,185,255,0.3) 0%, rgba(116,185,255,0.1) 100%);
-}
-
-.nav-item:nth-child(2) .nav-link:hover { /* Tags */
-  background: linear-gradient(135deg, rgba(253,121,168,0.3) 0%, rgba(253,121,168,0.1) 100%);
-}
-
-.nav-item:nth-child(3) .nav-link:hover { /* Email */
-  background: linear-gradient(135deg, rgba(253,203,110,0.3) 0%, rgba(253,203,110,0.1) 100%);
-}
-
-.nav-item:nth-child(4) .nav-link:hover { /* KOL */
-  background: linear-gradient(135deg, rgba(108,92,231,0.3) 0%, rgba(108,92,231,0.1) 100%);
-}
-
-.nav-item:nth-child(5) .nav-link:hover { /* Products */
-  background: linear-gradient(135deg, rgba(162,155,254,0.3) 0%, rgba(162,155,254,0.1) 100%);
-}
-
-.nav-item:nth-child(6) .nav-link:hover { /* Login */
-  background: linear-gradient(135deg, rgba(253,121,168,0.3) 0%, rgba(253,121,168,0.1) 100%);
-}
-
-.nav-item:nth-child(7) .nav-link:hover { /* Register */
-  background: linear-gradient(135deg, rgba(253,203,110,0.3) 0%, rgba(253,203,110,0.1) 100%);
 }
 </style>
