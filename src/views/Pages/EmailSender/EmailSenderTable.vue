@@ -81,9 +81,19 @@
             :state="keyState" :required="!isEditMode"></b-form-input>
         </b-form-group>
 
-        <b-form-group id="input-group-rate-limit" label="Rate Limit" label-for="input-rate-limit"
+        <b-form-group id="input-group-rate-limit" label-for="input-rate-limit"
           :invalid-feedback="rateLimitFeedback" :state="rateLimitState"
-          description="Maximum number of emails per hour">
+          description="Maximum number of emails per day">
+          <template #label>
+            Rate Limit
+            <span id="rate-limit-help" class="ml-1 rate-limit-help-icon">
+              <i class="ni ni-support-16"></i>
+            </span>
+            <b-popover target="rate-limit-help" triggers="hover" placement="top" container="body">
+              <template #title>Rate Limit Info</template>
+              Gmail free accounts can send up to 500 emails per day. Please set an appropriate rate limit based on your email provider.
+            </b-popover>
+          </template>
           <b-form-input id="input-rate-limit" v-model.number="form.rate_limit" type="number"
             placeholder="Enter rate limit" :state="rateLimitState" required min="1"></b-form-input>
         </b-form-group>
@@ -281,4 +291,17 @@ export default {
 
 <style scoped>
 .gcp-avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.8rem; background-color: #1a73e8; }
+.rate-limit-help-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  font-size: 12px;
+  color: #5f6368;
+  cursor: help;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+.rate-limit-help-icon:hover { color: #1a73e8; }
 </style>

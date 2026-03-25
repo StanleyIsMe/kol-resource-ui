@@ -40,7 +40,7 @@
               <b-form-textarea rows="4" id="about-form-textarea"
                 placeholder="Describe the product features, benefits, and target audience..."
                 v-model="product.description" name="description"
-                :rules="{ required: true, max: 500 }"></b-form-textarea>
+                :rules="{ max: 500 }"></b-form-textarea>
             </b-form-group>
           </div>
 
@@ -70,7 +70,7 @@ export default {
   },
   computed: {
     isFormValid() {
-      return this.product.name && this.product.description;
+      return !!this.product.name;
     },
     isCreate() {
       return !this.$route.query.id;

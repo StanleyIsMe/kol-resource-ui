@@ -401,11 +401,8 @@
                 <i class="ni ni-bold-left"></i> Back
               </b-button>
               <div>
-                <b-button type="submit" variant="primary" size="lg" class="mr-3">
+                <b-button type="submit" variant="primary" size="lg">
                   <i class="ni ni-send mr-1"></i>Send Email
-                </b-button>
-                <b-button type="reset" variant="danger" size="lg">
-                  <i class="ni ni-fat-remove mr-1"></i>Reset
                 </b-button>
               </div>
             </div>
@@ -414,6 +411,43 @@
       </validation-observer>
 
       
+      <!-- Success Modal -->
+      <b-modal
+        id="success-modal"
+        size="md"
+        centered
+        hide-footer
+        hide-header-close
+        no-close-on-backdrop
+        no-close-on-esc
+      >
+        <template #modal-header>
+          <div class="success-modal-header">
+            <div class="success-icon">
+              <i class="ni ni-check-bold"></i>
+            </div>
+            <h5 class="success-title">Email Job Created</h5>
+          </div>
+        </template>
+        
+        <div class="success-modal-content">
+          <div class="success-message">
+            <p>{{ successMessage }}</p>
+          </div>
+          <div class="success-actions">
+            <b-button 
+              variant="success" 
+              size="lg" 
+              @click="confirmSuccess"
+              class="success-confirm-btn"
+            >
+              <i class="ni ni-check-bold mr-2"></i>
+              Confirm
+            </b-button>
+          </div>
+        </div>
+      </b-modal>
+
       <!-- Error Modal -->
       <b-modal
         id="error-modal"
@@ -536,6 +570,7 @@ export default {
       
       isSearchingKols: false,
       errorMessage: '',
+      successMessage: '',
     };
   },
   mounted() {
@@ -731,19 +766,8 @@ export default {
           if (response.status == 200) {
             const kolCount = this.form.kols.length;
             const subject = this.form.subject;
-            
-            this.$bvToast.toast(
-              `Email "${subject}" queued for ${kolCount} KOLs`,
-              {
-                title: "Success",
-                variant: "success",
-                solid: true,
-                autoHideDelay: 6000,
-                toaster: 'b-toaster-top-right',
-                appendToast: false
-              }
-            );
-            this.onReset();
+            this.successMessage = `Email "${subject}" has been queued for ${kolCount} KOLs`;
+            this.$bvModal.show('success-modal');
           }
         })
         .catch((error) => {
@@ -789,6 +813,11 @@ export default {
       this.$bvModal.show('error-modal');
     },
     
+    confirmSuccess() {
+      this.$bvModal.hide('success-modal');
+      this.onReset();
+    },
+    
     onReset(event) {
       if (event) event.preventDefault();
       
@@ -797,6 +826,7 @@ export default {
       this.form.kols = [];
       this.form.product = "";
       this.form.sender = "";
+      this.editorData = "";
       
       if (this.editorDom) {
         this.editorDom.setData("");
@@ -820,6 +850,12 @@ export default {
       this.show = false;
       this.$nextTick(() => {
         this.show = true;
+        this.$nextTick(() => {
+          this.editorDom = CKEDITOR.replace("editor1");
+          this.editorDom.on('change', () => {
+            this.editorData = this.editorDom.getData();
+          });
+        });
       });
     },
     
@@ -1643,6 +1679,77 @@ $gcp-bg: #fafafa;
   &:hover {
     background: #c82333;
     box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+  }
+}
+
+.success-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 20px 0;
+  border-bottom: 2px solid rgba(30, 142, 62, 0.2);
+}
+
+.success-icon {
+  width: 50px;
+  height: 50px;
+  background: $gcp-green;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(30, 142, 62, 0.3);
+
+  i {
+    color: white;
+    font-size: 24px;
+  }
+}
+
+.success-title {
+  color: $gcp-green;
+  font-weight: 600;
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.success-modal-content {
+  padding: 30px 0;
+  text-align: center;
+}
+
+.success-message {
+  background: #e6f4ea;
+  border: 1px solid rgba(30, 142, 62, 0.2);
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 30px;
+
+  p {
+    color: #137333;
+    font-size: 1.1rem;
+    margin: 0;
+    line-height: 1.6;
+  }
+}
+
+.success-actions {
+  display: flex;
+  justify-content: center;
+}
+
+.success-confirm-btn {
+  background: $gcp-green;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 30px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(30, 142, 62, 0.3);
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: #1b7e38;
+    box-shadow: 0 4px 12px rgba(30, 142, 62, 0.4);
   }
 }
 

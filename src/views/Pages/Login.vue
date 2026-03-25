@@ -37,9 +37,6 @@
       </b-form>
     </validation-observer>
 
-    <div class="text-center mt-3">
-      <router-link to="/register" class="auth-link">Create new account</router-link>
-    </div>
   </div>
 </template>
 <script>
