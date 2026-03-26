@@ -15,12 +15,14 @@
     >
       <template v-if="addLink">
         <span class="nav-link-text">
-          {{ link.name }} <b class="caret"></b>
+          {{ link.name }}
         </span>
+        <b class="caret"></b>
       </template>
       <template v-else>
         <i :class="link.icon"></i>
-        <span class="nav-link-text">{{ link.name }} <b class="caret"></b></span>
+        <span class="nav-link-text">{{ link.name }}</span>
+        <b class="caret"></b>
       </template>
     </a>
 
@@ -190,8 +192,63 @@ export default {
   }
 };
 </script>
-<style>
+<style lang="scss">
 .sidebar-menu-item {
   cursor: pointer;
+}
+
+.nav-sm {
+  margin-left: 12px;
+  margin-top: 4px;
+
+  .nav-item .nav-link {
+    padding: 8px 16px 8px 24px;
+    font-size: 0.8125rem;
+    border-left: 3px solid transparent;
+
+    &:hover {
+      background-color: #f1f3f4;
+    }
+
+    &.active {
+      background-color: #e8f0fe;
+      border-left-color: #1a73e8;
+      color: #1a73e8;
+    }
+
+    i {
+      font-size: 0.875rem;
+      margin-right: 10px;
+      color: #5f6368;
+    }
+  }
+}
+
+.caret {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 8px;
+  vertical-align: middle;
+  border-top: 4px dashed;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+  transition: transform 0.2s ease;
+  float: right;
+  margin-top: 6px;
+  color: #5f6368;
+}
+
+.sidebar-menu-item.nav-link[data-toggle="collapse"]::after {
+  display: none !important;
+  content: none !important;
+}
+
+.sidebar-menu-item[aria-expanded="false"] .caret {
+  transform: rotate(-90deg);
+}
+
+.sidebar-menu-item[aria-expanded="true"] .caret {
+  transform: rotate(0deg);
 }
 </style>

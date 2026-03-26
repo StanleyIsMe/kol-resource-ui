@@ -1,64 +1,12 @@
 <template>
     <nav class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white" id="sidenav-main">
         <div class="container-fluid">
-
-            <!--Toggler-->
             <navbar-toggle-button @click.native="showSidebar">
-                
             </navbar-toggle-button>
             <router-link class="navbar-brand" to="/">
-                <img :src="logo" class="navbar-brand-img" alt="...">
+                <img :src="logo" class="navbar-brand-img" alt="Logo">
             </router-link>
 
-            <slot name="mobile-right">
-                <ul class="nav align-items-center d-md-none">
-                    <base-dropdown class="nav-item" menu-on-right tag="li" title-tag="a">
-                        <a slot="title-container" class="nav-link nav-link-icon" href="#" role="button"
-                           aria-haspopup="true" aria-expanded="false">
-                            <i class="ni ni-bell-55"></i>
-                        </a>
-
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                    </base-dropdown>
-                    <base-dropdown class="nav-item" menu-on-right tag="li" title-tag="a">
-                        <a slot="title-container" class="nav-link" href="#" role="button">
-                            <div class="media align-items-center">
-                              <span class="avatar avatar-sm rounded-circle">
-                                <img alt="Image placeholder" src="img/theme/team-1.jpg">
-                              </span>
-                            </div>
-                        </a>
-
-                        <div class=" dropdown-header noti-title">
-                            <h6 class="text-overflow m-0">Welcome!</h6>
-                        </div>
-                        <router-link to="/profile" class="dropdown-item">
-                            <i class="ni ni-single-02"></i>
-                            <span>My profile</span>
-                        </router-link>
-                        <router-link to="/profile" class="dropdown-item">
-                            <i class="ni ni-settings-gear-65"></i>
-                            <span>Settings</span>
-                        </router-link>
-                        <router-link to="/profile" class="dropdown-item">
-                            <i class="ni ni-calendar-grid-58"></i>
-                            <span>Activity</span>
-                        </router-link>
-                        <router-link to="/profile" class="dropdown-item">
-                            <i class="ni ni-support-16"></i>
-                            <span>Support</span>
-                        </router-link>
-                        <div class="dropdown-divider"></div>
-                        <a href="#!" class="dropdown-item">
-                            <i class="ni ni-user-run"></i>
-                            <span>Logout</span>
-                        </a>
-                    </base-dropdown>
-                </ul>
-            </slot>
             <slot></slot>
             <div v-show="$sidebar.showSidebar" class="navbar-collapse collapse show" id="sidenav-collapse-main">
 
@@ -79,33 +27,8 @@
                     <slot name="links">
                     </slot>
                 </ul>
-                <!--Divider-->
-                <!-- <hr class="my-3"> -->
-                <!--Heading-->
-                <!-- <h6 class="navbar-heading text-muted">Documentation</h6> -->
-                <!--Navigation-->
-                <!-- <ul class="navbar-nav mb-md-3">
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           href="https://www.creative-tim.com/learning-lab/bootstrap-vue/alerts/argon-dashboard">
-                            <i class="ni ni-spaceship"></i> Getting started
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           href="https://www.creative-tim.com/learning-lab/bootstrap-vue/colors/argon-dashboard">
-                            <i class="ni ni-palette"></i> Foundation
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           href="https://www.creative-tim.com/learning-lab/bootstrap-vue/alerts/argon-dashboard">
-                            <i class="ni ni-ui-04"></i> Components
-                        </a>
-                    </li>
-                </ul> -->
             </div>
-            </div>
+        </div>
     </nav>
 </template>
 <script>
@@ -148,3 +71,85 @@
     }
   };
 </script>
+
+<style lang="scss">
+#sidenav-main {
+  background: #ffffff;
+  border-right: 1px solid #dadce0;
+  box-shadow: none;
+
+  .navbar-brand {
+    padding: 16px 24px;
+    margin: 0;
+
+    .navbar-brand-img {
+      max-height: 36px;
+    }
+  }
+
+  .navbar-nav {
+    padding: 8px 0;
+
+    .nav-item {
+      margin-bottom: 0;
+
+      .nav-link {
+        padding: 10px 24px;
+        color: #5f6368;
+        font-weight: 500;
+        font-size: 0.875rem;
+        border-left: 3px solid transparent;
+        border-radius: 0;
+        transition: background-color 0.15s ease;
+
+        &:hover {
+          background-color: #f1f3f4;
+          color: #202124;
+        }
+
+        &.active {
+          background-color: #e8f0fe;
+          color: #1a73e8;
+          border-left-color: #1a73e8;
+          font-weight: 600;
+
+          i {
+            color: #1a73e8;
+          }
+        }
+
+        i {
+          font-size: 1rem;
+          margin-right: 12px;
+          color: #5f6368;
+          width: 20px;
+          text-align: center;
+        }
+
+        .nav-link-text {
+          font-size: 0.875rem;
+        }
+      }
+    }
+  }
+}
+
+.navbar-toggler {
+  border: 1px solid #dadce0;
+  border-radius: 4px;
+  padding: 6px 10px;
+}
+
+#sidenav-main::-webkit-scrollbar {
+  width: 4px;
+}
+
+#sidenav-main::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#sidenav-main::-webkit-scrollbar-thumb {
+  background: #dadce0;
+  border-radius: 2px;
+}
+</style>

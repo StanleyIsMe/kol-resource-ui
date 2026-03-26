@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "serve": "cross-env ENV=dev vue-cli-service serve --open",
+    "serve": "cross-env ENV=dev vue-cli-service serve --open --port 3000",
     "build": "cross-env NODE_OPTIONS=--openssl-legacy-provider cross-env CI=false vue-cli-service build",
     "lint": "vue-cli-service lint",
     "dev": "npm run serve"
@@ -45,6 +45,7 @@
     "babel-plugin-component": "^1.1.0",
     "cross-env": "^7.0.3",
     "node-sass": "^9.0.0",
+    "sass": "^1.93.2",
     "sass-loader": "^10",
     "vue-template-compiler": "^2.6.11"
   },
